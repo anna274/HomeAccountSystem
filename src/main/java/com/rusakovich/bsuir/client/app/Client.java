@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,6 +55,27 @@ public class Client extends Application {
         }
         return params;
     }
+
+    public static Map<String, String> getResponseObject(String data) {
+        String[] responseParams = data.split(",");
+        Map<String, String> params = new HashMap<>();
+        for (String sr : responseParams) {
+            System.out.println(sr);
+            String[] s = sr.split(":");
+            params.put(s[0], s[1]);
+        }
+        return params;
+    }
+
+    public static ArrayList<Map<String, String>> getResponseArray(String data) {
+        ArrayList<Map<String, String>> objects = new ArrayList<>();
+        String[] responseObjectsParams = data.split(";");
+        for (String s : responseObjectsParams) {
+            objects.add(getResponseObject(s));
+        }
+        return objects;
+    }
+
 
     public static void openScene(String scenePath){
         stage.setResizable(false);

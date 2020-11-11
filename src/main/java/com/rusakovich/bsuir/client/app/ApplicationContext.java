@@ -23,4 +23,9 @@ public class ApplicationContext {
         }
         return instance;
     }
+
+    public static void clearContext() {
+        instance = null;
+    }
+
 }

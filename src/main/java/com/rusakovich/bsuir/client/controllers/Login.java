@@ -3,7 +3,6 @@ package com.rusakovich.bsuir.client.controllers;
 import com.rusakovich.bsuir.client.app.ApplicationContext;
 import com.rusakovich.bsuir.client.app.Client;
 import com.rusakovich.bsuir.server.entity.Account;
-import com.rusakovich.bsuir.server.entity.AccountRole;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -39,9 +38,10 @@ public class Login {
         String query = "account?command=login&login=" + login + "&password=" + password;
         Map<String, String> params = Client.doRequest(query);
         if ("ok".equals(params.get("status"))) {
-            Account account = new Account(null, params.get("login"), null, 0);
+            Map<String, String> accountParams = Client.getResponseObject(params.get("data"));
+            Account account = Account.fromMap(accountParams);
             ApplicationContext.getInstance().setCurrentAccount(account);
-            Client.openScene("../views/Home.fxml");
+            Client.openScene("../views/Application.fxml");
         } else {
             error.setText(params.get("error"));
         }

@@ -51,9 +51,9 @@ public class Registration {
         String query = "account?command=register&login=" + login + "&password=" + password;
         Map<String, String> params = Client.doRequest(query);
         if ("ok".equals(params.get("status"))) {
-            Account account = new Account(null, params.get("login"), null, 0);
-            ApplicationContext.getInstance().setCurrentAccount(account);
-            Client.openScene("../views/Home.fxml");
+            Client.openScene("../views/Login.fxml");
+        } else {
+            error.setText(params.get("error"));
         }
     }
 

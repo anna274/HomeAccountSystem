@@ -1,0 +1,8 @@
+.menu {
+   -fx-background-color: #d4d8d9;
+}
+
+.menu__button {
+    -fx-background-color: #d4d8d9;
+    -fx-border-style: none;
+}

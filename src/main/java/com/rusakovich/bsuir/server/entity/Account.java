@@ -1,5 +1,6 @@
 package com.rusakovich.bsuir.server.entity;
 
+import java.util.Map;
 import java.util.Objects;
 
 public class Account {
@@ -68,9 +69,18 @@ public class Account {
 
     @Override
     public String toString() {
-        return "id=" + id +
-                "&login=" + login +
-                "&password=" + password +
-                "&role=" + roleId;
+        return "id:" + id +
+                ",login:" + login +
+                ",password:" + password +
+                ",roleId:" + roleId;
+    }
+
+    public static Account fromMap(Map<String, String> params){
+        Account account = new Account();
+        account.setId(Long.parseLong(params.get("id")));
+        account.setLogin(params.get("login"));
+        account.setPassword(params.get("password"));
+        account.setRoleId(Integer.parseInt(params.get("roleId")));
+        return account;
     }
 }

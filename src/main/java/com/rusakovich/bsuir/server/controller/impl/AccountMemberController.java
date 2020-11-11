@@ -2,9 +2,11 @@ package com.rusakovich.bsuir.server.controller.impl;
 
 import com.rusakovich.bsuir.server.controller.Controller;
 import com.rusakovich.bsuir.server.controller.ControllerHelper;
+import com.rusakovich.bsuir.server.entity.Account;
 import com.rusakovich.bsuir.server.entity.AccountMember;
 import com.rusakovich.bsuir.server.model.service.impl.AccountMemberServiceImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +21,9 @@ public class AccountMemberController implements Controller {
     public String request(Map<String, String> params) {
         String command = params.get("command");
         switch (command) {
+            case "add": {
+                return add(params);
+            }
             case "getOne": {
                 return getOne(params);
             }
@@ -39,6 +44,11 @@ public class AccountMemberController implements Controller {
         }
     }
 
+    private String add(Map<String, String> params) {
+        AccountMember account = memberService.addAccountMember(AccountMember.fromMap(params));
+        return ControllerHelper.getResponse("ok", account.toString(), "");
+    }
+
     private String getOne(Map<String, String> params) {
         AccountMember member = memberService.getAccountMemberById(Long.valueOf(params.get("id")));
         return ControllerHelper.getResponse("ok", member.toString(), "");
@@ -54,13 +64,14 @@ public class AccountMemberController implements Controller {
     }
 
     private String getAllByAccountId(Map<String, String> params) {
-        StringBuilder response = new StringBuilder();
         List<AccountMember> members =
                 memberService.getAccountMembersByAccountId(Long.parseLong(params.get("accountId")));
+        List<String> membersStr = new ArrayList<String>();
         for (AccountMember member : members) {
-            response.append(member.toString());
+            membersStr.add(member.toString());
         }
-        return ControllerHelper.getResponse("ok", "[" + response + "]", "");
+        String data = String.join(";", membersStr);
+        return ControllerHelper.getResponse("ok", data, "");
     }
 
     private String update(Map<String, String> params) {
@@ -76,10 +87,12 @@ public class AccountMemberController implements Controller {
     }
 
     private AccountMember createMemberObjFromParams(Map<String, String> params) {
-        return new AccountMember(
-                Long.parseLong(params.get("id")),
-                params.get("name"),
-                Long.parseLong(params.get("accountId"))
-        );
+        AccountMember accountMember = new AccountMember();
+        accountMember.setAccountId(Long.parseLong(params.get("accountId")));
+        accountMember.setName(params.get("name"));
+        if(params.containsKey("id")) {
+            accountMember.setId(Long.parseLong(params.get("id")));
+        }
+        return accountMember;
     }
 }

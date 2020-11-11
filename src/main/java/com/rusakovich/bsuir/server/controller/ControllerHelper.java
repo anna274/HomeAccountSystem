@@ -9,7 +9,7 @@ public class ControllerHelper {
             response.add("status=" + status);
         }
         if (isNotEmpty(data)) {
-            response.add(data);
+            response.add("data=" + data);
         }
         if (isNotEmpty(error)) {
             response.add("error=" + error);

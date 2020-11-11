@@ -1,5 +1,6 @@
 package com.rusakovich.bsuir.server.entity;
 
+import java.util.Map;
 import java.util.Objects;
 
 public class AccountMember {
@@ -41,9 +42,19 @@ public class AccountMember {
 
     @Override
     public String toString() {
-        return "{id=" + id +
-                "&name=" + name +
-                "&accountId=" + accountId +"}";
+        return "id:" + id +
+                ",name:" + name +
+                ",accountId:" + accountId;
+    }
+
+    public static AccountMember fromMap(Map<String, String> params){
+        AccountMember member = new AccountMember();
+        if(params.containsKey("id")) {
+            member.setId(Long.parseLong(params.get("id")));
+        }
+        member.setName(params.get("name"));
+        member.setAccountId(Long.parseLong(params.get("accountId")));
+        return member;
     }
 
     @Override
