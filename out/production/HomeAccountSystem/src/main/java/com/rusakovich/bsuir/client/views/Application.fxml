@@ -1,37 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../../assets/styles/styles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rusakovich.bsuir.client.controllers.Application">
    <children>
-      <Pane prefHeight="75.0" prefWidth="800.0" styleClass="menu">
-         <children>
-            <Button fx:id="membersBtn" contentDisplay="TOP" mnemonicParsing="false" onAction="#goToMembers" prefHeight="75.0" prefWidth="85.0" styleClass="menu__button" text="Участники">
-               <graphic>
-                  <ImageView fitHeight="40.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../assets/images/users.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-               <font>
-                  <Font name="Century Gothic" size="12.0" />
-               </font>
-            </Button>
-            <Button fx:id="logoutBtn" contentDisplay="TOP" layoutX="85.0" mnemonicParsing="false" onAction="#logout" prefHeight="75.0" prefWidth="85.0" styleClass="menu__button" text="Выйти">
-               <graphic>
-                  <ImageView fitHeight="40.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../assets/images/logout.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-         </children>
-        </Pane>
-      <Pane fx:id="mainPane" layoutY="75.0" onDragDetected="#goToMembers" prefHeight="525.0" prefWidth="800.0" />
+      <Pane fx:id="menuPane" prefHeight="75.0" prefWidth="800.0" styleClass="menu" />
+      <Pane fx:id="mainPane" layoutY="75.0" prefHeight="525.0" prefWidth="800.0" />
    </children>
 </Pane>

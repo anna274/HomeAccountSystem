@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="800.0" styleClass="menu" stylesheets="@../../../assets/styles/styles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rusakovich.bsuir.client.controllers.menus.UserMenu">
+   <children>
+      <Button contentDisplay="TOP" layoutX="14.0" mnemonicParsing="false" onAction="#goToMembers" prefHeight="75.0" prefWidth="78.0" styleClass="menu__button" text="Участники">
+         <graphic>
+            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+               <Image url="@../../../assets/images/family.png"/>
+            </ImageView>
+         </graphic>
+         <font>
+            <Font name="Century Gothic Bold" size="12.0" />
+         </font></Button>
+      <Button contentDisplay="TOP" layoutX="92.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="78.0" styleClass="menu__button" text="Счета">
+         <graphic>
+            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+               <Image url="@../../../assets/images/credit-card.png"/>
+            </ImageView>
+         </graphic>
+         <font>
+            <Font name="Century Gothic Bold" size="12.0" />
+         </font>
+      </Button>
+      <Button contentDisplay="TOP" layoutX="170.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="78.0" styleClass="menu__button" text="Доходы">
+         <graphic>
+            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+               <Image url="@../../../assets/images/credit-card.png"/>
+            </ImageView>
+         </graphic>
+         <font>
+            <Font name="Century Gothic Bold" size="12.0" />
+         </font>
+      </Button>
+      <Button contentDisplay="TOP" layoutX="248.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="78.0" styleClass="menu__button" text="Расходы">
+         <graphic>
+            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+               <Image url="@../../../assets/images/credit-card.png"/>
+            </ImageView>
+         </graphic>
+         <font>
+            <Font name="Century Gothic Bold" size="12.0" />
+         </font>
+      </Button>
+      <Button contentDisplay="TOP" layoutX="326.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="78.0" styleClass="menu__button" text="Отчёты">
+         <graphic>
+            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+               <Image url="@../../../assets/images/credit-card.png"/>
+            </ImageView>
+         </graphic>
+         <font>
+            <Font name="Century Gothic Bold" size="12.0" />
+         </font>
+      </Button>
+      <Button contentDisplay="TOP" layoutX="404.0" mnemonicParsing="false" onAction="#logout" prefHeight="75.0" prefWidth="78.0" styleClass="menu__button" text="Выйти">
+         <graphic>
+            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+               <Image url="@../../../assets/images/logout.png"/>
+            </ImageView>
+         </graphic>
+         <font>
+            <Font name="Century Gothic Bold" size="12.0" />
+         </font>
+      </Button>
+   </children>
+</Pane>

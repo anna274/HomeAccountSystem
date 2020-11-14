@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="525.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rusakovich.bsuir.client.controllers.bankAccounts.BankAccounts">
+   <children>
+      <Label alignment="CENTER" layoutX="15.0" layoutY="3.0" prefHeight="17.0" prefWidth="771.0" text="Здесь вы можете добавлять, редактировать и удалять записи о ваших счетах">
+         <font>
+            <Font name="Century Gothic" size="12.0" />
+         </font>
+      </Label>
+      <TableView fx:id="table" layoutX="8.0" layoutY="54.0" prefHeight="394.0" prefWidth="784.0">
+        <columns>
+            <TableColumn fx:id="selectionColumn" prefWidth="24.999984741210938" />
+            <TableColumn fx:id="idColumn" minWidth="0.0" prefWidth="0.0" />
+            <TableColumn prefWidth="228.79997634887695" text="Счёт" />
+            <TableColumn prefWidth="281.3999938964844" text="Владелец" />
+          <TableColumn fx:id="nameColumn" prefWidth="243.4000244140625" text="Баланс" />
+        </columns>
+      </TableView>
+      <Button fx:id="addBtn" layoutX="14.0" layoutY="487.0" mnemonicParsing="false" onAction="#addMember" prefHeight="25.0" prefWidth="111.0" text="Добавить">
+         <font>
+            <Font name="Century Gothic" size="12.0" />
+         </font>
+      </Button>
+      <Button layoutX="137.0" layoutY="487.0" mnemonicParsing="false" onAction="#editMember" prefHeight="25.0" prefWidth="111.0" text="Редактировать">
+         <font>
+            <Font name="Century Gothic" size="12.0" />
+         </font>
+      </Button>
+      <Button fx:id="deleteBtn" layoutX="259.0" layoutY="487.0" mnemonicParsing="false" onAction="#deleteSelectedMembers" prefHeight="25.0" prefWidth="111.0" text="Удалить">
+         <font>
+            <Font name="Century Gothic" size="12.0" />
+         </font>
+      </Button>
+      <CheckBox fx:id="selectAllCheckbox" layoutX="15.0" layoutY="459.0" mnemonicParsing="false" onAction="#selectAll" text="Выделить всё" />
+      <Label fx:id="message" alignment="CENTER" layoutX="10.0" layoutY="21.0" prefHeight="25.0" prefWidth="784.0" textFill="#43cf7b">
+         <font>
+            <Font name="Century Gothic" size="14.0" />
+         </font></Label>
+   </children>
+</Pane>
