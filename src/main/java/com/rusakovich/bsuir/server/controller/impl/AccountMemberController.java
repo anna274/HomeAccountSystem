@@ -75,24 +75,12 @@ public class AccountMemberController implements Controller {
     }
 
     private String update(Map<String, String> params) {
-        memberService.updateAccountMember(
-                createMemberObjFromParams(params)
-        );
+        memberService.updateAccountMember(AccountMember.fromMap(params));
         return ControllerHelper.getResponse("ok", "", "");
     }
 
     private String delete(Map<String, String> params) {
         memberService.deleteAccountMember(Long.valueOf(params.get("id")));
         return ControllerHelper.getResponse("ok", "", "");
-    }
-
-    private AccountMember createMemberObjFromParams(Map<String, String> params) {
-        AccountMember accountMember = new AccountMember();
-        accountMember.setAccountId(Long.parseLong(params.get("accountId")));
-        accountMember.setName(params.get("name"));
-        if(params.containsKey("id")) {
-            accountMember.setId(Long.parseLong(params.get("id")));
-        }
-        return accountMember;
     }
 }

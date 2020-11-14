@@ -31,7 +31,7 @@ public class Application {
 
     @FXML
     private void goToMembers(ActionEvent event) {
-        switchMainPane("../views/Members.fxml");
+        switchMainPane("../views/members/Members.fxml");
     }
 
     private void switchMainPane(String url) {

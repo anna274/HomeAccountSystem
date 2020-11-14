@@ -88,11 +88,11 @@ public class AccountMemberDaoImpl implements AccountMemberDao {
 
     private AccountMember createAccountMemberObjFromResultSet(ResultSet resultSet) {
         try {
-            return new AccountMember(
-                    resultSet.getLong("id"),
-                    resultSet.getString("name"),
-                    resultSet.getLong("account_id")
-            );
+            AccountMember member = new AccountMember();
+            member.setId(resultSet.getLong("id"));
+            member.setName(resultSet.getString("name"));
+            member.setAccountId(resultSet.getLong("account_id"));
+            return member;
         } catch (SQLException e) {
             e.printStackTrace();
             return null;

@@ -1,5 +1,7 @@
 package com.rusakovich.bsuir.server.entity;
 
+import javafx.scene.control.CheckBox;
+
 import java.util.Map;
 import java.util.Objects;
 
@@ -7,8 +9,10 @@ public class AccountMember {
     private Long id;
     private String name;
     private Long accountId;
+    private CheckBox selected;
 
-    public AccountMember() {}
+    public AccountMember() {
+    }
 
     public AccountMember(Long id, String name, Long accountId) {
         this.id = id;
@@ -38,6 +42,14 @@ public class AccountMember {
 
     public void setAccountId(Long accountId) {
         this.accountId = accountId;
+    }
+
+    public CheckBox getSelected() {
+        return selected;
+    }
+
+    public void setSelected(CheckBox selected) {
+        this.selected = selected;
     }
 
     @Override

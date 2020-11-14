@@ -1,10 +1,6 @@
 package com.rusakovich.bsuir.client.controllers;
 
-import com.rusakovich.bsuir.client.app.ApplicationContext;
 import com.rusakovich.bsuir.client.app.Client;
-import com.rusakovich.bsuir.client.views.FrameHandler;
-import com.rusakovich.bsuir.server.entity.Account;
-import com.rusakovich.bsuir.server.entity.AccountRole;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

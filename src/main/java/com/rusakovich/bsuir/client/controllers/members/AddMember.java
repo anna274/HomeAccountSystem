@@ -1,4 +1,4 @@
-package com.rusakovich.bsuir.client.controllers;
+package com.rusakovich.bsuir.client.controllers.members;
 
 import com.rusakovich.bsuir.client.app.ApplicationContext;
 import com.rusakovich.bsuir.client.app.Client;
