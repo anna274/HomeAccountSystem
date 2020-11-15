@@ -4,31 +4,33 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="525.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rusakovich.bsuir.client.controllers.members.Members">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="525.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rusakovich.bsuir.client.controllers.currencies.Currencies">
    <children>
-      <Label layoutX="15.0" layoutY="3.0" prefHeight="17.0" prefWidth="771.0" text="Здесь вы можете добавить членов семьи в семейный аккаунт. Также можете редактировать и удалять записи о члена семьи.">
+      <Label alignment="CENTER" layoutX="15.0" layoutY="3.0" prefHeight="17.0" prefWidth="771.0" text="Здесь вы можете добавлять, редактировать и удалять записи о валютах.">
          <font>
             <Font name="Century Gothic" size="12.0" />
          </font>
       </Label>
-      <TableView fx:id="table" layoutX="8.0" layoutY="54.0" prefHeight="394.0" prefWidth="784.0">
+      <TableView fx:id="table" layoutX="8.0" layoutY="54.0" prefHeight="394.0" prefWidth="770.0">
         <columns>
             <TableColumn fx:id="selectionColumn" prefWidth="24.999984741210938" />
             <TableColumn fx:id="idColumn" minWidth="0.0" prefWidth="0.0" />
-          <TableColumn fx:id="nameColumn" prefWidth="785.5999336242676" text="Имя" />
+            <TableColumn fx:id="nameColumn" prefWidth="397.6000061035156" text="Название" />
+            <TableColumn fx:id="codeColumn" prefWidth="84.0" text="Код" />
+          <TableColumn fx:id="shortNameColumn" prefWidth="259.20001220703125" text="Короткое название" />
         </columns>
       </TableView>
-      <Button fx:id="addBtn" layoutX="14.0" layoutY="487.0" mnemonicParsing="false" onAction="#addMember" prefHeight="25.0" prefWidth="111.0" text="Добавить">
+      <Button fx:id="addBtn" layoutX="14.0" layoutY="487.0" mnemonicParsing="false" onAction="#addCurrency" prefHeight="25.0" prefWidth="111.0" text="Добавить">
          <font>
             <Font name="Century Gothic" size="12.0" />
          </font>
       </Button>
-      <Button layoutX="137.0" layoutY="487.0" mnemonicParsing="false" onAction="#editMember" prefHeight="25.0" prefWidth="111.0" text="Редактировать">
+      <Button layoutX="137.0" layoutY="487.0" mnemonicParsing="false" onAction="#editCurrency" prefHeight="25.0" prefWidth="111.0" text="Редактировать">
          <font>
             <Font name="Century Gothic" size="12.0" />
          </font>
       </Button>
-      <Button fx:id="deleteBtn" layoutX="259.0" layoutY="487.0" mnemonicParsing="false" onAction="#deleteSelectedMembers" prefHeight="25.0" prefWidth="111.0" text="Удалить">
+      <Button fx:id="deleteBtn" layoutX="259.0" layoutY="487.0" mnemonicParsing="false" onAction="#deleteSelectedCurrencies" prefHeight="25.0" prefWidth="111.0" text="Удалить">
          <font>
             <Font name="Century Gothic" size="12.0" />
          </font>

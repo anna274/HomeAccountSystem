@@ -8,13 +8,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CurrencyDaoImpl implements CrudDao<Currency> {
     private static final String SELECT_CURRENCY_BY_ID = "SELECT * FROM currency WHERE id = ?";
     private static final String SELECT_ALL_CURRENCY = "SELECT * FROM currency";
-    private static final String INSERT_CURRENCY = "INSERT INTO currency ( name, code, shortName ) VALUES (?, ?, ?)";
-    private static final String UPDATE_CURRENCY = "UPDATE currency SET name = ?,code = ?, shortName = ? WHERE id = ?";
+    private static final String INSERT_CURRENCY = "INSERT INTO currency ( name, code, short_name ) VALUES (?, ?, ?)";
+    private static final String UPDATE_CURRENCY = "UPDATE currency SET name = ?,code = ?, short_name = ? WHERE id = ?";
     private static final String DELETE_CURRENCY = "DELETE FROM currency WHERE id = ?";
 
     @Override
@@ -41,7 +42,7 @@ public class CurrencyDaoImpl implements CrudDao<Currency> {
                         resultSet.getLong("id"),
                         resultSet.getString("name"),
                         resultSet.getString("code"),
-                        resultSet.getString("shortName")
+                        resultSet.getString("short_name")
                 );
             }
         } catch (SQLException e) {
@@ -52,17 +53,17 @@ public class CurrencyDaoImpl implements CrudDao<Currency> {
 
     @Override
     public List<Currency> findAll() {
-        List<Currency> currencies = null;
+        List<Currency> currencies = new ArrayList<>();
         try {
             Connection connection = ConnectionManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_CURRENCY);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
+            while(resultSet.next()) {
                 currencies.add(new Currency(
                         resultSet.getLong("id"),
                         resultSet.getString("name"),
                         resultSet.getString("code"),
-                        resultSet.getString("shortName")
+                        resultSet.getString("short_name")
                 ));
             }
         } catch (SQLException e) {

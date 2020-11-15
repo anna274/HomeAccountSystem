@@ -5,7 +5,7 @@ import com.rusakovich.bsuir.server.entity.BankAccount;
 import java.util.List;
 
 public interface BankAccountService {
-    void addBankAccount(BankAccount bankAccount);
+    BankAccount addBankAccount(BankAccount bankAccount);
 
     BankAccount getBankAccountById(Long id);
 

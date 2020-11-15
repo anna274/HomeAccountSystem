@@ -4,19 +4,21 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rusakovich.bsuir.client.controllers.members.AddMember">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="326.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rusakovich.bsuir.client.controllers.currencies.AddCurrency">
    <children>
-      <Button fx:id="addBtn" layoutX="65.0" layoutY="150.0" mnemonicParsing="false" onAction="#add" prefHeight="30.0" prefWidth="131.0" text="Добавить" />
-      <Label layoutX="71.0" layoutY="34.0" prefHeight="30.0" prefWidth="258.0" text="Добавление записи о члене семьи">
+      <Button fx:id="addBtn" layoutX="65.0" layoutY="267.0" mnemonicParsing="false" onAction="#add" prefHeight="30.0" prefWidth="131.0" text="Добавить" />
+      <Label alignment="CENTER" layoutX="71.0" layoutY="34.0" prefHeight="30.0" prefWidth="258.0" text="Добавление валюты">
          <font>
             <Font name="Century Gothic" size="14.0" />
          </font></Label>
-      <TextField fx:id="nameField" layoutX="65.0" layoutY="94.0" prefHeight="35.0" prefWidth="270.0" promptText="Имя" />
-      <Button fx:id="cancelBtn" layoutX="211.0" layoutY="150.0" mnemonicParsing="false" onAction="#cancel" prefHeight="30.0" prefWidth="125.0" text="Отмена" />
+      <TextField fx:id="nameField" layoutX="65.0" layoutY="94.0" prefHeight="35.0" prefWidth="270.0" promptText="Название" />
+      <Button fx:id="cancelBtn" layoutX="210.0" layoutY="267.0" mnemonicParsing="false" onAction="#cancel" prefHeight="30.0" prefWidth="125.0" text="Отмена" />
       <Label fx:id="error" alignment="CENTER" layoutX="65.0" layoutY="65.0" prefHeight="22.0" prefWidth="270.0" textFill="RED">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
+      <TextField fx:id="shortNameField" layoutX="65.0" layoutY="143.0" prefHeight="35.0" prefWidth="270.0" promptText="Короткое название" />
+      <TextField fx:id="codeField" layoutX="65.0" layoutY="193.0" prefHeight="35.0" prefWidth="270.0" promptText="Код (например, BYR)" />
    </children>
 </Pane>

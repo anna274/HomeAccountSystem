@@ -1,5 +1,8 @@
 package com.rusakovich.bsuir.server.entity;
 
+import javafx.scene.control.CheckBox;
+
+import java.util.Map;
 import java.util.Objects;
 
 public class BankAccount {
@@ -8,9 +11,10 @@ public class BankAccount {
     private Long memberId;
     private Long memberAccountId;
     private Long currencyId;
-    private Float expenses;
-    private Float income;
-    private Float balance;
+    private Float expenses = 0F;
+    private Float income = 0F;
+    private Float balance = 0F;
+    private CheckBox selected;
 
     public BankAccount() {
     }
@@ -90,6 +94,14 @@ public class BankAccount {
         this.balance = balance;
     }
 
+    public CheckBox getSelected() {
+        return selected;
+    }
+
+    public void setSelected(CheckBox selected) {
+        this.selected = selected;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -111,13 +123,34 @@ public class BankAccount {
 
     @Override
     public String toString() {
-        return "{id=" + id +
-                "&name=" + name +
-                "&memberId=" + memberId +
-                "&accountId=" + memberAccountId +
-                "&currency=" + currencyId +
-                "&expenses=" + expenses +
-                "&income=" + income +
-                "&balance=" + balance + "}";
+        return "id:" + id +
+                ",name:" + name +
+                ",memberId:" + memberId +
+                ",memberAccountId:" + memberAccountId +
+                ",currencyId:" + currencyId +
+                ",expense:" + expenses +
+                ",income:" + income +
+                ",balance:" + balance;
+    }
+
+    public static BankAccount fromMap(Map<String, String> params){
+        BankAccount bankAccount = new BankAccount();
+        if(params.containsKey("id")) {
+            bankAccount.setId(Long.parseLong(params.get("id")));
+        }
+        bankAccount.setName(params.get("name"));
+        bankAccount.setMemberAccountId(Long.parseLong(params.get("memberAccountId")));
+        bankAccount.setMemberId(Long.parseLong(params.get("memberId")));
+        bankAccount.setCurrencyId(Long.parseLong(params.get("currencyId")));
+        if(params.get("income") != null) {
+            bankAccount.setIncome(Float.parseFloat(params.get("income")));
+        }
+        if(params.get("expense") != null) {
+            bankAccount.setIncome(Float.parseFloat(params.get("expense")));
+        }
+        if(params.get("income") != null && params.get("income") != null) {
+            bankAccount.setIncome(bankAccount.getIncome() - bankAccount.getExpenses());
+        }
+        return bankAccount;
     }
 }

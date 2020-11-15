@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rusakovich.bsuir.client.controllers.members.EditMember">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rusakovich.bsuir.client.controllers.members.EditCurrency">
    <children>
       <Button fx:id="editBtn" layoutX="65.0" layoutY="150.0" mnemonicParsing="false" onAction="#edit" prefHeight="30.0" prefWidth="131.0" text="Обновить" />
       <Label layoutX="60.0" layoutY="35.0" prefHeight="30.0" prefWidth="281.0" text="Редактирование записи о члене семьи">

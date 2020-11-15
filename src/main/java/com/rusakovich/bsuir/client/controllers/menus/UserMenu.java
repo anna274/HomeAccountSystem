@@ -29,4 +29,9 @@ public class UserMenu extends Menu{
         parentController.switchMainPane("../views/members/Members.fxml");
     }
 
+    @FXML
+    private void goToBankAccounts(ActionEvent event) {
+        parentController.switchMainPane("../views/bankAccounts/BankAccounts.fxml");
+    }
+
 }

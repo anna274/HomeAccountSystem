@@ -15,22 +15,23 @@
         <columns>
             <TableColumn fx:id="selectionColumn" prefWidth="24.999984741210938" />
             <TableColumn fx:id="idColumn" minWidth="0.0" prefWidth="0.0" />
-            <TableColumn prefWidth="228.79997634887695" text="Счёт" />
-            <TableColumn prefWidth="281.3999938964844" text="Владелец" />
-          <TableColumn fx:id="nameColumn" prefWidth="243.4000244140625" text="Баланс" />
+            <TableColumn fx:id="nameColumn" prefWidth="228.79997634887695" text="Счёт" />
+            <TableColumn fx:id="ownerColumn" prefWidth="178.5999755859375" text="Владелец" />
+          <TableColumn fx:id="balanceColumn" prefWidth="222.40005493164062" text="Баланс" />
+            <TableColumn fx:id="currencyColumn" prefWidth="124.0" text="Валюта" />
         </columns>
       </TableView>
-      <Button fx:id="addBtn" layoutX="14.0" layoutY="487.0" mnemonicParsing="false" onAction="#addMember" prefHeight="25.0" prefWidth="111.0" text="Добавить">
+      <Button fx:id="addBtn" layoutX="14.0" layoutY="487.0" mnemonicParsing="false" onAction="#addBankAccount" prefHeight="25.0" prefWidth="111.0" text="Добавить">
          <font>
             <Font name="Century Gothic" size="12.0" />
          </font>
       </Button>
-      <Button layoutX="137.0" layoutY="487.0" mnemonicParsing="false" onAction="#editMember" prefHeight="25.0" prefWidth="111.0" text="Редактировать">
+      <Button layoutX="137.0" layoutY="487.0" mnemonicParsing="false" onAction="#editBankAccount" prefHeight="25.0" prefWidth="111.0" text="Редактировать">
          <font>
             <Font name="Century Gothic" size="12.0" />
          </font>
       </Button>
-      <Button fx:id="deleteBtn" layoutX="259.0" layoutY="487.0" mnemonicParsing="false" onAction="#deleteSelectedMembers" prefHeight="25.0" prefWidth="111.0" text="Удалить">
+      <Button fx:id="deleteBtn" layoutX="259.0" layoutY="487.0" mnemonicParsing="false" onAction="#deleteSelectedBankAccounts" prefHeight="25.0" prefWidth="111.0" text="Удалить">
          <font>
             <Font name="Century Gothic" size="12.0" />
          </font>

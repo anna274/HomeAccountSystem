@@ -44,9 +44,7 @@ public class AccountController implements Controller {
     }
 
     public String register(Map<String, String> params) {
-        Account account = accountService.addAccount(
-                createAccountObjFromParams(params)
-        );
+        Account account = accountService.addAccount(Account.fromMap(params));
         System.out.println(account);
         return ControllerHelper.getResponse("ok", account.toString(), "");
     }
@@ -76,9 +74,7 @@ public class AccountController implements Controller {
     }
 
     public String update(Map<String, String> params) {
-        accountService.updateAccount(
-                createAccountObjFromParams(params)
-        );
+        accountService.updateAccount(Account.fromMap(params));
         return ControllerHelper.getResponse("ok", "", "");
     }
 

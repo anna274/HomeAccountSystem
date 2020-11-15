@@ -2,10 +2,12 @@ package com.rusakovich.bsuir.server.controller.impl;
 
 import com.rusakovich.bsuir.server.controller.Controller;
 import com.rusakovich.bsuir.server.controller.ControllerHelper;
+import com.rusakovich.bsuir.server.entity.AccountMember;
 import com.rusakovich.bsuir.server.entity.Currency;
 import com.rusakovich.bsuir.server.model.service.impl.CurrencyServiceImpl;
 
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.List;
 
@@ -41,7 +43,7 @@ public class CurrencyController implements Controller {
     }
 
     public String add(Map<String, String> params) {
-        Currency currency = createCurrencyObjFromParams(params);
+        Currency currency = Currency.fromMap(params);
         currencyService.addCurrency(currency);
         return ControllerHelper.getResponse("ok", currency.toString(), "");
     }
@@ -52,32 +54,22 @@ public class CurrencyController implements Controller {
     }
 
     public String getAll() {
-        StringBuilder response = new StringBuilder();
         List<Currency> currencies = currencyService.getAllCurrencies();
+        List<String> currenciesStr = new ArrayList<String>();
         for (Currency currency : currencies) {
-            response.append(currency.toString());
+            currenciesStr.add(currency.toString());
         }
-        return ControllerHelper.getResponse("ok", "[" + response + "]", "");
+        String data = String.join(";", currenciesStr);
+        return ControllerHelper.getResponse("ok", data, "");
     }
 
     public String update(Map<String, String> params) {
-        currencyService.updateCurrency(
-                createCurrencyObjFromParams(params)
-        );
+        currencyService.updateCurrency(Currency.fromMap(params));
         return ControllerHelper.getResponse("ok", "", "");
     }
 
     public String delete(Map<String, String> params) {
         currencyService.deleteCurrency(Long.valueOf(params.get("id")));
         return ControllerHelper.getResponse("ok", "", "");
-    }
-
-    private Currency createCurrencyObjFromParams(Map<String, String> params) {
-        return new Currency(
-                Long.parseLong(params.get("id")),
-                params.get("name"),
-                params.get("code"),
-                params.get("shortName")
-        );
     }
 }

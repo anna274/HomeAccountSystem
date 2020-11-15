@@ -1,5 +1,8 @@
 package com.rusakovich.bsuir.server.entity;
 
+import javafx.scene.control.CheckBox;
+
+import java.util.Map;
 import java.util.Objects;
 
 public class Currency {
@@ -7,6 +10,7 @@ public class Currency {
     private String name;
     private String code;
     private String shortName;
+    private CheckBox selected;
 
     public Currency() {
     }
@@ -50,6 +54,14 @@ public class Currency {
         this.shortName = shortName;
     }
 
+    public CheckBox getSelected() {
+        return selected;
+    }
+
+    public void setSelected(CheckBox selected) {
+        this.selected = selected;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -68,9 +80,20 @@ public class Currency {
 
     @Override
     public String toString() {
-        return "{id=" + id +
-                "&name=" + name +
-                "&code=" + code +
-                "&shortName='" + shortName+"}";
+        return "id:" + id +
+                ",name:" + name +
+                ",code:" + code +
+                ",shortName:" + shortName;
+    }
+
+    public static Currency fromMap(Map<String, String> params){
+        Currency currency = new Currency();
+        if(params.containsKey("id")) {
+            currency.setId(Long.parseLong(params.get("id")));
+        }
+        currency.setName(params.get("name"));
+        currency.setCode(params.get("code"));
+        currency.setShortName(params.get("shortName"));
+        return currency;
     }
 }

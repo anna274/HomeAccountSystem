@@ -10,16 +10,16 @@
       <Button contentDisplay="TOP" layoutX="14.0" mnemonicParsing="false" onAction="#goToMembers" prefHeight="75.0" prefWidth="78.0" styleClass="menu__button" text="Участники">
          <graphic>
             <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-               <Image url="@../../../assets/images/family.png"/>
+               <Image url="@../../../assets/images/family.png" />
             </ImageView>
          </graphic>
          <font>
             <Font name="Century Gothic Bold" size="12.0" />
          </font></Button>
-      <Button contentDisplay="TOP" layoutX="92.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="78.0" styleClass="menu__button" text="Счета">
+      <Button contentDisplay="TOP" layoutX="92.0" mnemonicParsing="false" onAction="#goToBankAccounts" prefHeight="75.0" prefWidth="78.0" styleClass="menu__button" text="Счета">
          <graphic>
             <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-               <Image url="@../../../assets/images/credit-card.png"/>
+               <Image url="@../../../assets/images/credit-card.png" />
             </ImageView>
          </graphic>
          <font>
@@ -29,7 +29,7 @@
       <Button contentDisplay="TOP" layoutX="170.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="78.0" styleClass="menu__button" text="Доходы">
          <graphic>
             <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-               <Image url="@../../../assets/images/credit-card.png"/>
+               <Image url="@../../../assets/images/credit-card.png" />
             </ImageView>
          </graphic>
          <font>
@@ -39,7 +39,7 @@
       <Button contentDisplay="TOP" layoutX="248.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="78.0" styleClass="menu__button" text="Расходы">
          <graphic>
             <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-               <Image url="@../../../assets/images/credit-card.png"/>
+               <Image url="@../../../assets/images/credit-card.png" />
             </ImageView>
          </graphic>
          <font>
@@ -49,7 +49,7 @@
       <Button contentDisplay="TOP" layoutX="326.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="78.0" styleClass="menu__button" text="Отчёты">
          <graphic>
             <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-               <Image url="@../../../assets/images/credit-card.png"/>
+               <Image url="@../../../assets/images/credit-card.png" />
             </ImageView>
          </graphic>
          <font>
@@ -59,7 +59,7 @@
       <Button contentDisplay="TOP" layoutX="404.0" mnemonicParsing="false" onAction="#logout" prefHeight="75.0" prefWidth="78.0" styleClass="menu__button" text="Выйти">
          <graphic>
             <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-               <Image url="@../../../assets/images/logout.png"/>
+               <Image url="@../../../assets/images/logout.png" />
             </ImageView>
          </graphic>
          <font>

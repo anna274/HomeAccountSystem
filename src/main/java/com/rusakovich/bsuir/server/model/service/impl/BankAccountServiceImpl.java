@@ -15,12 +15,13 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     @Override
-    public void addBankAccount(BankAccount bankAccount) {
+    public BankAccount addBankAccount(BankAccount bankAccount) {
         try {
             bankAccountDao.save(bankAccount);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return bankAccount;
     }
 
     @Override
