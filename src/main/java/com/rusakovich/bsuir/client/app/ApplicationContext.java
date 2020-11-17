@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class ApplicationContext {
     private static ApplicationContext instance;
     private Account currentAccount;
+    private ArrayList<Account> accountsList = new ArrayList<>();
     private ArrayList<AccountMember> membersList = new ArrayList<>();
     private ArrayList<Currency> currencies = new ArrayList<>();
     private ArrayList<BankAccount> bankAccounts = new ArrayList<>();
@@ -47,6 +48,14 @@ public class ApplicationContext {
 
     public void setBankAccounts(ArrayList<BankAccount> bankAccounts) {
         this.bankAccounts = bankAccounts;
+    }
+
+    public ArrayList<Account> getAccountsList() {
+        return accountsList;
+    }
+
+    public void setAccountsList(ArrayList<Account> accountsList) {
+        this.accountsList = accountsList;
     }
 
     public static ApplicationContext getInstance() {

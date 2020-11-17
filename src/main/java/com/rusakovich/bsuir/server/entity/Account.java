@@ -1,5 +1,6 @@
 package com.rusakovich.bsuir.server.entity;
 
+import javafx.scene.control.CheckBox;
 import java.util.Map;
 import java.util.Objects;
 
@@ -8,6 +9,7 @@ public class Account {
     private String login;
     private String password;
     private Integer roleId;
+    private CheckBox selected;
 
     public Account() {
     }
@@ -51,6 +53,14 @@ public class Account {
         this.roleId = roleId;
     }
 
+    public CheckBox getSelected() {
+        return selected;
+    }
+
+    public void setSelected(CheckBox selected) {
+        this.selected = selected;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -77,10 +87,16 @@ public class Account {
 
     public static Account fromMap(Map<String, String> params){
         Account account = new Account();
-        account.setId(Long.parseLong(params.get("id")));
+        if(params.get("id") != null) {
+            account.setId(Long.parseLong(params.get("id")));
+        }
         account.setLogin(params.get("login"));
         account.setPassword(params.get("password"));
-        account.setRoleId(Integer.parseInt(params.get("roleId")));
+        if(params.get("roleId") != null) {
+            account.setRoleId(Integer.parseInt(params.get("roleId")));
+        } else {
+            account.setRoleId(0);
+        }
         return account;
     }
 }

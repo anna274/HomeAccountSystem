@@ -3,9 +3,11 @@ package com.rusakovich.bsuir.server.controller.impl;
 import com.rusakovich.bsuir.server.controller.Controller;
 import com.rusakovich.bsuir.server.controller.ControllerHelper;
 import com.rusakovich.bsuir.server.entity.Account;
+import com.rusakovich.bsuir.server.entity.AccountMember;
 import com.rusakovich.bsuir.server.entity.AccountRole;
 import com.rusakovich.bsuir.server.model.service.impl.AccountServiceImpl;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.List;
 
@@ -45,7 +47,6 @@ public class AccountController implements Controller {
 
     public String register(Map<String, String> params) {
         Account account = accountService.addAccount(Account.fromMap(params));
-        System.out.println(account);
         return ControllerHelper.getResponse("ok", account.toString(), "");
     }
 
@@ -65,12 +66,13 @@ public class AccountController implements Controller {
     }
 
     public String getAll() {
-        StringBuilder response = new StringBuilder();
         List<Account> accounts = accountService.getAllAccounts();
+        List<String> accountsStr = new ArrayList<String>();
         for (Account account : accounts) {
-            response.append(account.toString());
+            accountsStr.add(account.toString());
         }
-        return ControllerHelper.getResponse("ok", "[" + response + "]", "");
+        String data = String.join(";", accountsStr);
+        return ControllerHelper.getResponse("ok", data, "");
     }
 
     public String update(Map<String, String> params) {
@@ -81,20 +83,5 @@ public class AccountController implements Controller {
     public String delete(Map<String, String> params) {
         accountService.deleteAccount(Long.valueOf(params.get("id")));
         return ControllerHelper.getResponse("ok", "", "");
-    }
-
-    private Account createAccountObjFromParams(Map<String, String> params) {
-        Account account = new Account();
-        account.setLogin(params.get("login"));
-        account.setPassword(params.get("password"));
-        if(params.containsKey("id")) {
-            account.setId(Long.parseLong(params.get("id")));
-        }
-        if(params.containsKey("role")) {
-            account.setRoleId(Integer.parseInt(params.get("role")));
-        } else {
-            account.setRoleId(0);
-        }
-        return account;
     }
 }

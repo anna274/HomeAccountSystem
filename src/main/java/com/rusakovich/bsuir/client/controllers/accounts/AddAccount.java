@@ -1,19 +1,22 @@
-package com.rusakovich.bsuir.client.controllers;
+package com.rusakovich.bsuir.client.controllers.accounts;
 
+import com.rusakovich.bsuir.client.app.ApplicationContext;
 import com.rusakovich.bsuir.client.app.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 import java.util.Map;
 
-public class Registration {
+public class AddAccount {
     @FXML
-    private Button signUpBtn;
+    private Button addBtn;
     @FXML
-    private Button goToLoginBtn;
+    private Button cancelBtn;
     @FXML
     private TextField loginField;
     @FXML
@@ -21,10 +24,12 @@ public class Registration {
     @FXML
     private TextField repeatPasswordField;
     @FXML
+    private CheckBox isAdmin;
+    @FXML
     private Label error;
 
     @FXML
-    private void signUp(ActionEvent event) {
+    private void add(ActionEvent event) {
         String login = loginField.getText();
         String password = passwordField.getText();
         String repeatedPassword = repeatPasswordField.getText();
@@ -44,17 +49,23 @@ public class Registration {
             error.setText("Пароли не совпадают");
             return;
         }
-        String query = "account?command=register&login=" + login + "&password=" + password;
+        addBtn.setText("Сохранение...");
+        int roleId = isAdmin.isSelected() ? 1 : 0;
+        String query = "account?command=register&login=" + login + "&password=" + password + "&roleId=" + roleId;
         Map<String, String> params = Client.doRequest(query);
+        addBtn.setText("Добавить");
         if ("ok".equals(params.get("status"))) {
-            Client.openScene("../views/Login.fxml");
+            cancel(null);
         } else {
             error.setText(params.get("error"));
         }
+
     }
 
     @FXML
-    private void goToLogin(ActionEvent event) {
-        Client.openScene("../views/Login.fxml");
+    private void cancel(ActionEvent event) {
+        Stage stage = (Stage) cancelBtn.getScene().getWindow();
+        stage.close();
     }
+
 }

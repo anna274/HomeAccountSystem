@@ -26,4 +26,9 @@ public class AdminMenu extends Menu{
     private void goToCurrencies(ActionEvent event) {
         parentController.switchMainPane("../views/currencies/Currencies.fxml");
     }
+
+    @FXML
+    private void goToAccounts(ActionEvent event) {
+        parentController.switchMainPane("../views/accounts/Accounts.fxml");
+    }
 }

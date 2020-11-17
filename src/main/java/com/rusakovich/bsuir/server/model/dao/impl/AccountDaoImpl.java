@@ -83,11 +83,13 @@ public class AccountDaoImpl implements AccountDao {
 
     @Override
     public void update(Account account) throws SQLException {
+        System.out.println("for update" + account);
         Connection connection = ConnectionManager.getConnection();
         try (PreparedStatement statement = connection.prepareStatement(UPDATE_ACCOUNT)) {
             statement.setString(1, account.getLogin());
             statement.setString(2, account.getPassword());
             statement.setInt(3, account.getRoleId());
+            statement.setLong(4, account.getId());
             statement.executeUpdate();
         }
     }
