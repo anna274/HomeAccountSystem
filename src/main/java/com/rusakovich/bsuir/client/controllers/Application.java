@@ -3,8 +3,10 @@ package com.rusakovich.bsuir.client.controllers;
 import com.rusakovich.bsuir.client.app.ApplicationContext;
 import com.rusakovich.bsuir.client.app.Client;
 import com.rusakovich.bsuir.client.controllers.menus.Menu;
+import javafx.collections.ObservableArray;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
@@ -40,6 +42,9 @@ public class Application {
 
     public void switchMainPane(String url) {
         try {
+            if(mainPane.getChildren().size() != 0) {
+                mainPane.getChildren().remove(mainPane.getChildren().get(0));
+            }
             Pane newPane = FXMLLoader.load(getClass().getResource(url));
             mainPane.getChildren().add(newPane);
         } catch (IOException e) {

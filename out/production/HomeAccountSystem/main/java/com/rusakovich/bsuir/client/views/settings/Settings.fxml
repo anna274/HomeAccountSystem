@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="525.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rusakovich.bsuir.client.controllers.settings.Settings">
+   <children>
+      <Label alignment="CENTER" layoutX="26.0" layoutY="26.0" prefHeight="25.0" prefWidth="749.0" text="Настройки профиля. Здесь вы можете изменить логин и пароли вашего аккаунта">
+         <font>
+            <Font name="Century Gothic" size="14.0" />
+         </font></Label>
+      <Button layoutX="507.0" layoutY="143.0" mnemonicParsing="false" onAction="#goToChangeLogin" prefHeight="37.0" prefWidth="123.0" text="Изменить логин" />
+      <Label layoutX="171.0" layoutY="152.0" prefHeight="18.0" prefWidth="64.0" text="Логин:">
+         <font>
+            <Font name="Century Gothic" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="loginLabel" alignment="CENTER" layoutX="223.0" layoutY="149.0" prefHeight="25.0" prefWidth="278.0">
+         <font>
+            <Font name="Century Gothic" size="14.0" />
+         </font>
+      </Label>
+      <Button layoutX="171.0" layoutY="195.0" mnemonicParsing="false" onAction="#goToChangePassword" prefHeight="37.0" prefWidth="459.0" text="Изменить пароль" />
+   </children>
+</Pane>

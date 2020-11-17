@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="331.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rusakovich.bsuir.client.controllers.accounts.AddAccount">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="331.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rusakovich.bsuir.client.controllers.accounts.ChangeLogin">
    <children>
       <Button fx:id="addBtn" layoutX="65.0" layoutY="264.0" mnemonicParsing="false" onAction="#add" prefHeight="30.0" prefWidth="131.0" text="Добавить" />
       <Label alignment="CENTER" layoutX="71.0" layoutY="34.0" prefHeight="30.0" prefWidth="258.0" text="Добавление aккаунта">

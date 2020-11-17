@@ -3,8 +3,6 @@ package com.rusakovich.bsuir.server.controller.impl;
 import com.rusakovich.bsuir.server.controller.Controller;
 import com.rusakovich.bsuir.server.controller.ControllerHelper;
 import com.rusakovich.bsuir.server.entity.Account;
-import com.rusakovich.bsuir.server.entity.AccountMember;
-import com.rusakovich.bsuir.server.entity.AccountRole;
 import com.rusakovich.bsuir.server.model.service.impl.AccountServiceImpl;
 
 import java.util.ArrayList;
@@ -28,8 +26,8 @@ public class AccountController implements Controller {
             case "register": {
                 return register(params);
             }
-            case "getOne": {
-                return getOne(params);
+            case "getById": {
+                return getById(params);
             }
             case "getAll": {
                 return getAll();
@@ -60,7 +58,7 @@ public class AccountController implements Controller {
         }
     }
 
-    public String getOne(Map<String, String> params) {
+    public String getById(Map<String, String> params) {
         Account account = accountService.getAccountById(Long.valueOf(params.get("id")));
         return ControllerHelper.getResponse("ok", account.toString(), "");
     }
