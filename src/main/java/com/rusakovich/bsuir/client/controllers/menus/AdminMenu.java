@@ -21,6 +21,11 @@ public class AdminMenu extends Menu{
     }
 
     @FXML
+    private void goToCategories(ActionEvent event) {
+        parentController.switchMainPane("../views/categories/Categories.fxml");
+    }
+
+    @FXML
     private void goToSettings(ActionEvent event) {
         parentController.switchMainPane("../views/settings/Settings.fxml");
     }

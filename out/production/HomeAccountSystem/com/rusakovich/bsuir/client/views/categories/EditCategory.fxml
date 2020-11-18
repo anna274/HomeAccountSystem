@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="233.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rusakovich.bsuir.client.controllers.categories.EditCategory">
+   <children>
+      <Button fx:id="editBtn" layoutX="65.0" layoutY="157.0" mnemonicParsing="false" onAction="#edit" prefHeight="30.0" prefWidth="131.0" text="Обновить" />
+      <Label alignment="CENTER" layoutX="71.0" layoutY="34.0" prefHeight="30.0" prefWidth="258.0" text="Редактирование категории">
+         <font>
+            <Font name="Century Gothic" size="14.0" />
+         </font></Label>
+      <TextField fx:id="nameField" layoutX="65.0" layoutY="110.0" prefHeight="35.0" prefWidth="270.0" promptText="Название категории" />
+      <Button fx:id="cancelBtn" layoutX="210.0" layoutY="157.0" mnemonicParsing="false" onAction="#cancel" prefHeight="30.0" prefWidth="125.0" text="Отмена" />
+      <Label fx:id="error" alignment="CENTER" layoutX="61.0" layoutY="86.0" prefHeight="22.0" prefWidth="270.0" textFill="RED">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="sectionLabel" alignment="CENTER" layoutX="67.0" layoutY="57.0" prefHeight="30.0" prefWidth="258.0" text="Раздел:">
+         <font>
+            <Font name="Century Gothic" size="14.0" />
+         </font>
+      </Label>
+   </children>
+</Pane>

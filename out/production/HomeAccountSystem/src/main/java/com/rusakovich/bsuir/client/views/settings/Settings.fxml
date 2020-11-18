@@ -10,17 +10,17 @@
          <font>
             <Font name="Century Gothic" size="14.0" />
          </font></Label>
-      <Button layoutX="507.0" layoutY="143.0" mnemonicParsing="false" onAction="#goToChangeLogin" prefHeight="37.0" prefWidth="123.0" text="Изменить логин" />
-      <Label layoutX="171.0" layoutY="152.0" prefHeight="18.0" prefWidth="64.0" text="Логин:">
+      <Button layoutX="507.0" layoutY="219.0" mnemonicParsing="false" onAction="#goToChangeLogin" prefHeight="37.0" prefWidth="123.0" text="Изменить логин" />
+      <Label layoutX="171.0" layoutY="228.0" prefHeight="18.0" prefWidth="64.0" text="Логин:">
          <font>
             <Font name="Century Gothic" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="loginLabel" alignment="CENTER" layoutX="223.0" layoutY="149.0" prefHeight="25.0" prefWidth="278.0">
+      <Label fx:id="loginLabel" alignment="CENTER" layoutX="220.0" layoutY="225.0" prefHeight="25.0" prefWidth="278.0">
          <font>
-            <Font name="Century Gothic" size="14.0" />
+            <Font name="Century Gothic" size="16.0" />
          </font>
       </Label>
-      <Button layoutX="171.0" layoutY="195.0" mnemonicParsing="false" onAction="#goToChangePassword" prefHeight="37.0" prefWidth="459.0" text="Изменить пароль" />
+      <Button layoutX="171.0" layoutY="279.0" mnemonicParsing="false" onAction="#goToChangePassword" prefHeight="37.0" prefWidth="459.0" text="Изменить пароль" />
    </children>
 </Pane>

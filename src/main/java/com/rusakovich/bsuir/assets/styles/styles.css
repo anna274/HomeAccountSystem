@@ -6,3 +6,7 @@
     -fx-background-color: #d4d8d9;
     -fx-border-style: none;
 }
+
+.button__active {
+    -fx-background-color: #B2B2B2;
+}

@@ -1,15 +1,19 @@
 package com.rusakovich.bsuir.server.entity;
 
+import javafx.scene.control.CheckBox;
+
+import java.util.Map;
 import java.util.Objects;
 
-public class ExpenseCategory {
+public class Category {
     private Long id;
     private String name;
+    private CheckBox selected;
 
-    public ExpenseCategory() {
+    public Category() {
     }
 
-    public ExpenseCategory(Long id, String name) {
+    public Category(Long id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -30,11 +34,19 @@ public class ExpenseCategory {
         this.name = name;
     }
 
+    public CheckBox getSelected() {
+        return selected;
+    }
+
+    public void setSelected(CheckBox selected) {
+        this.selected = selected;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ExpenseCategory that = (ExpenseCategory) o;
+        Category that = (Category) o;
         return Objects.equals(id, that.id) &&
                 Objects.equals(name, that.name);
     }
@@ -46,7 +58,16 @@ public class ExpenseCategory {
 
     @Override
     public String toString() {
-        return "{id=" + id +
-                "&name=" + name + "}";
+        return "id:" + id +
+                ",name:" + name;
+    }
+
+    public static Category fromMap(Map<String, String> params){
+        Category category = new Category();
+        if(params.get("id") != null) {
+            category.setId(Long.parseLong(params.get("id")));
+        }
+        category.setName(params.get("name"));
+        return category;
     }
 }

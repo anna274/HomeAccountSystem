@@ -1,9 +1,6 @@
 package com.rusakovich.bsuir.client.app;
 
-import com.rusakovich.bsuir.server.entity.Account;
-import com.rusakovich.bsuir.server.entity.AccountMember;
-import com.rusakovich.bsuir.server.entity.BankAccount;
-import com.rusakovich.bsuir.server.entity.Currency;
+import com.rusakovich.bsuir.server.entity.*;
 
 import java.util.ArrayList;
 
@@ -14,6 +11,8 @@ public class ApplicationContext {
     private ArrayList<AccountMember> membersList = new ArrayList<>();
     private ArrayList<Currency> currencies = new ArrayList<>();
     private ArrayList<BankAccount> bankAccounts = new ArrayList<>();
+    private ArrayList<Category> incomeCategories = new ArrayList<>();
+    private ArrayList<Category> expenseCategories = new ArrayList<>();
 
     private ApplicationContext() {
     }
@@ -56,6 +55,22 @@ public class ApplicationContext {
 
     public void setAccountsList(ArrayList<Account> accountsList) {
         this.accountsList = accountsList;
+    }
+
+    public ArrayList<Category> getIncomeCategories() {
+        return incomeCategories;
+    }
+
+    public void setIncomeCategories(ArrayList<Category> incomeCategories) {
+        this.incomeCategories = incomeCategories;
+    }
+
+    public ArrayList<Category> getExpenseCategories() {
+        return expenseCategories;
+    }
+
+    public void setExpenseCategories(ArrayList<Category> expenseCategories) {
+        this.expenseCategories = expenseCategories;
     }
 
     public static ApplicationContext getInstance() {

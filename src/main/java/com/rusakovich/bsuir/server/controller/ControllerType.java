@@ -11,7 +11,9 @@ public enum ControllerType {
     EXPENSE(new ExpenseController(new ExpenseServiceImpl(new ExpenseDaoImpl()))),
     INCOME(new IncomeController(new IncomeServiceImpl(new IncomeDaoImpl()))),
     ACCOUNT(new AccountController(new AccountServiceImpl(new AccountDaoImpl()))),
-    ACCOUNT_MEMBER(new AccountMemberController(new AccountMemberServiceImpl(new AccountMemberDaoImpl())));
+    ACCOUNT_MEMBER(new AccountMemberController(new AccountMemberServiceImpl(new AccountMemberDaoImpl()))),
+    INCOME_CATEGORY(new IncomeCategoryController(new IncomeCategoryServiceImpl(new IncomeCategoryDaoImpl()))),
+    EXPENSE_CATEGORY(new ExpenseCategoryController(new ExpenseCategoryServiceImpl(new ExpenseCategoryDaoImpl())));
 
     private final Controller controller;
 

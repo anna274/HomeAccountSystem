@@ -26,27 +26,17 @@
             <Font name="Century Gothic Bold" size="12.0" />
          </font>
       </Button>
-      <Button contentDisplay="TOP" layoutX="186.0" mnemonicParsing="false" prefHeight="79.0" prefWidth="130.0" styleClass="menu__button" text="Категории. Расходы">
+      <Button contentDisplay="TOP" layoutX="186.0" mnemonicParsing="false" onAction="#goToCategories" prefHeight="79.0" prefWidth="130.0" styleClass="menu__button" text="Категории">
          <graphic>
             <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-               <Image url="@../../../assets/images/credit-card.png" />
+               <Image url="@../../../assets/images/categories.png" />
             </ImageView>
          </graphic>
          <font>
             <Font name="Century Gothic Bold" size="12.0" />
          </font>
       </Button>
-      <Button contentDisplay="TOP" layoutX="316.0" mnemonicParsing="false" prefHeight="79.0" prefWidth="130.0" styleClass="menu__button" text="Категории. Доходы">
-         <graphic>
-            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-               <Image url="@../../../assets/images/credit-card.png" />
-            </ImageView>
-         </graphic>
-         <font>
-            <Font name="Century Gothic Bold" size="12.0" />
-         </font>
-      </Button>
-      <Button contentDisplay="TOP" layoutX="443.0" mnemonicParsing="false" onAction="#goToSettings" prefHeight="75.0" prefWidth="78.0" styleClass="menu__button" text="Настройки">
+      <Button contentDisplay="TOP" layoutX="316.0" mnemonicParsing="false" onAction="#goToSettings" prefHeight="75.0" prefWidth="78.0" styleClass="menu__button" text="Настройки">
          <graphic>
             <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                <Image url="@../../../assets/images/settings.png" />
@@ -56,7 +46,7 @@
             <Font name="Century Gothic Bold" size="12.0" />
          </font>
       </Button>
-      <Button contentDisplay="TOP" layoutX="521.0" mnemonicParsing="false" onAction="#logout" prefHeight="75.0" prefWidth="78.0" styleClass="menu__button" text="Выйти">
+      <Button contentDisplay="TOP" layoutX="400.0" mnemonicParsing="false" onAction="#logout" prefHeight="75.0" prefWidth="78.0" styleClass="menu__button" text="Выйти">
          <graphic>
             <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                <image>

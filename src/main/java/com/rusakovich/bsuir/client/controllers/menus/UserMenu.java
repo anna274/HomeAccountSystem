@@ -11,7 +11,7 @@ public class UserMenu extends Menu{
 
     @FXML
     private void goToMembers(ActionEvent event) {
-        parentController.switchMainPane("../views/members/Accounts.fxml");
+        parentController.switchMainPane("../views/members/Members.fxml");
     }
 
     @FXML
