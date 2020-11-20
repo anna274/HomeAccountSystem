@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="359.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rusakovich.bsuir.client.controllers.members.AddCurrency">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="359.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rusakovich.bsuir.client.controllers.bankAccounts.AddBankAccount">
    <children>
       <Button fx:id="addBtn" layoutX="65.0" layoutY="299.0" mnemonicParsing="false" onAction="#add" prefHeight="30.0" prefWidth="131.0" text="Добавить" />
       <Label alignment="CENTER" contentDisplay="CENTER" layoutX="71.0" layoutY="34.0" prefHeight="30.0" prefWidth="258.0" text="Добавление записи о счёте">
@@ -18,9 +18,9 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <ComboBox layoutX="65.0" layoutY="163.0" prefHeight="35.0" prefWidth="270.0" />
+      <ComboBox fx:id="membersList" layoutX="65.0" layoutY="163.0" prefHeight="35.0" prefWidth="270.0" />
       <Label layoutX="65.0" layoutY="137.0" text="Владелец" />
-      <ComboBox layoutX="65.0" layoutY="233.0" prefHeight="35.0" prefWidth="270.0" />
+      <ComboBox fx:id="currenciesList" layoutX="65.0" layoutY="233.0" prefHeight="35.0" prefWidth="270.0" />
       <Label layoutX="65.0" layoutY="207.0" text="Валюта" />
    </children>
 </Pane>

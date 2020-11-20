@@ -2,6 +2,7 @@ package com.rusakovich.bsuir.client.controllers.members;
 
 import com.rusakovich.bsuir.client.app.ApplicationContext;
 import com.rusakovich.bsuir.client.app.Client;
+import com.rusakovich.bsuir.client.controllers.ApplicationPane;
 import com.rusakovich.bsuir.server.entity.AccountMember;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
 
-public class Members {
+public class Members extends ApplicationPane {
 
     @FXML
     private TableColumn<Long, String> idColumn;
@@ -131,25 +132,11 @@ public class Members {
     }
 
     private void updateTableContent() {
-        Long accountId = ApplicationContext.getInstance().getCurrentAccount().getId();
-        String query = "account_member?command=getAllByAccountId&accountId=" + accountId;
-        Map<String, String> params = Client.doRequest(query);
-
-        if(params.get("status").equals("ok")) {
-            if(params.containsKey("data")) {
-                ArrayList<Map<String, String>> membersParams = Client.getResponseArray(params.get("data"));
-                ArrayList<AccountMember> members = new ArrayList<>();
-
-                for(Map<String, String> memberParams : membersParams){
-                    AccountMember member = AccountMember.fromMap(memberParams);
-                    member.setSelected(new CheckBox());
-                    members.add(member);
-                }
-                table.setItems(FXCollections.observableArrayList(members));
-                ApplicationContext.getInstance().setMembersList(members);
-            } else {
-                table.setPlaceholder(new Label("Добавьте пользователей в аккаунт. Для этого нажмите кнопку 'Добавить'."));
-            }
+        ArrayList<AccountMember> members = getMembersFromDB();
+        ApplicationContext.getInstance().setMembersList(members);
+        table.setItems(FXCollections.observableArrayList(members));
+        if(members.size() != 0) {
+            table.setPlaceholder(new Label("Добавьте пользователей в аккаунт. Для этого нажмите кнопку 'Добавить'."));
         }
         message.setText("");
     }
@@ -161,5 +148,24 @@ public class Members {
             member.getSelected().setSelected(selectAllCheckbox.isSelected());
         }
         table.setItems(members);
+    }
+
+    public static ArrayList<AccountMember> getMembersFromDB(){
+        Long accountId = ApplicationContext.getInstance().getCurrentAccount().getId();
+        String query = "account_member?command=getAllByAccountId&accountId=" + accountId;
+        Map<String, String> params = Client.doRequest(query);
+        ArrayList<AccountMember> members = new ArrayList<>();
+        if(params.get("status").equals("ok")) {
+            if(params.containsKey("data")) {
+                ArrayList<Map<String, String>> membersParams = Client.getResponseArray(params.get("data"));
+
+                for(Map<String, String> memberParam : membersParams){
+                    AccountMember member = AccountMember.fromMap(memberParam);
+                    member.setSelected(new CheckBox());
+                    members.add(member);
+                }
+            }
+        }
+        return members;
     }
 }

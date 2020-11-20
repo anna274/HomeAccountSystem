@@ -2,6 +2,7 @@ package com.rusakovich.bsuir.client.controllers.currencies;
 
 import com.rusakovich.bsuir.client.app.ApplicationContext;
 import com.rusakovich.bsuir.client.app.Client;
+import com.rusakovich.bsuir.client.controllers.ApplicationPane;
 import com.rusakovich.bsuir.client.controllers.currencies.EditCurrency;
 import com.rusakovich.bsuir.server.entity.Currency;
 import javafx.collections.FXCollections;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
 
-public class Currencies {
+public class Currencies extends ApplicationPane {
 
     @FXML
     private TableColumn<Long, String> idColumn;
@@ -138,24 +139,12 @@ public class Currencies {
     }
 
     private void updateTableContent() {
-        String query = "currency?command=getAll";
-        Map<String, String> params = Client.doRequest(query);
-
-        if(params.get("status").equals("ok")) {
-            if(params.containsKey("data")) {
-                ArrayList<Map<String, String>> currenciesParams = Client.getResponseArray(params.get("data"));
-                ArrayList<Currency> currencies = new ArrayList<>();
-
-                for(Map<String, String> currencyParams : currenciesParams){
-                    Currency currency = Currency.fromMap(currencyParams);
-                    currency.setSelected(new CheckBox());
-                    currencies.add(currency);
-                }
-                table.setItems(FXCollections.observableArrayList(currencies));
-                ApplicationContext.getInstance().setCurrencies(currencies);
-            } else {
-                table.setPlaceholder(new Label("Добавьте информацию о валютах. Для этого нажмите кнопку 'Добавить'."));
-            }
+        ArrayList<Currency> currencies = getCurrenciesFromDB();
+        ApplicationContext.getInstance().setCurrencies(currencies);
+        if(currencies.size() != 0) {
+            table.setItems(FXCollections.observableArrayList(currencies));
+        } else {
+            table.setPlaceholder(new Label("Добавьте информацию о валютах. Для этого нажмите кнопку 'Добавить'."));
         }
         message.setText("");
     }
@@ -167,5 +156,24 @@ public class Currencies {
             currency.getSelected().setSelected(selectAllCheckbox.isSelected());
         }
         table.setItems(currencies);
+    }
+
+    public static ArrayList<Currency> getCurrenciesFromDB(){
+        String query = "currency?command=getAll";
+        Map<String, String> params = Client.doRequest(query);
+        ArrayList<Currency> currencies = new ArrayList<>();
+
+        if(params.get("status").equals("ok")) {
+            if(params.containsKey("data")) {
+                ArrayList<Map<String, String>> currenciesParams = Client.getResponseArray(params.get("data"));
+
+                for(Map<String, String> currencyParams : currenciesParams){
+                    Currency currency = Currency.fromMap(currencyParams);
+                    currency.setSelected(new CheckBox());
+                    currencies.add(currency);
+                }
+            }
+        }
+        return currencies;
     }
 }

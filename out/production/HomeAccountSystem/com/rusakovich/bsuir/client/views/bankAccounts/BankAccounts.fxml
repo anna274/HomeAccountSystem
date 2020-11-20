@@ -11,14 +11,14 @@
             <Font name="Century Gothic" size="12.0" />
          </font>
       </Label>
-      <TableView fx:id="table" layoutX="8.0" layoutY="54.0" prefHeight="394.0" prefWidth="784.0">
+      <TableView fx:id="table" layoutX="8.0" layoutY="52.0" prefHeight="394.0" prefWidth="784.0">
         <columns>
             <TableColumn fx:id="selectionColumn" prefWidth="24.999984741210938" />
             <TableColumn fx:id="idColumn" minWidth="0.0" prefWidth="0.0" />
             <TableColumn fx:id="nameColumn" prefWidth="228.79997634887695" text="Счёт" />
-            <TableColumn fx:id="ownerColumn" prefWidth="178.5999755859375" text="Владелец" />
-          <TableColumn fx:id="balanceColumn" prefWidth="222.40005493164062" text="Баланс" />
-            <TableColumn fx:id="currencyColumn" prefWidth="124.0" text="Валюта" />
+            <TableColumn fx:id="ownerColumn" prefWidth="224.19998168945312" text="Владелец" />
+          <TableColumn fx:id="balanceColumn" prefWidth="98.99996948242188" text="Баланс" />
+            <TableColumn fx:id="currencyColumn" prefWidth="204.199951171875" text="Валюта" />
         </columns>
       </TableView>
       <Button fx:id="addBtn" layoutX="14.0" layoutY="487.0" mnemonicParsing="false" onAction="#addBankAccount" prefHeight="25.0" prefWidth="111.0" text="Добавить">

@@ -2,6 +2,7 @@ package com.rusakovich.bsuir.client.controllers.accounts;
 
 import com.rusakovich.bsuir.client.app.ApplicationContext;
 import com.rusakovich.bsuir.client.app.Client;
+import com.rusakovich.bsuir.client.controllers.ApplicationPane;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -12,7 +13,7 @@ import javafx.stage.Stage;
 
 import java.util.Map;
 
-public class AddAccount {
+public class AddAccount extends ApplicationPane {
     @FXML
     private Button addBtn;
     @FXML

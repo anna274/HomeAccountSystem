@@ -2,6 +2,7 @@ package com.rusakovich.bsuir.client.controllers.accounts;
 
 import com.rusakovich.bsuir.client.app.ApplicationContext;
 import com.rusakovich.bsuir.client.app.Client;
+import com.rusakovich.bsuir.client.controllers.ApplicationPane;
 import com.rusakovich.bsuir.server.entity.Account;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
 
-public class Accounts {
+public class Accounts extends ApplicationPane {
 
     @FXML
     private TableColumn<Account, String> idColumn;

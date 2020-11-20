@@ -1,10 +1,11 @@
 package com.rusakovich.bsuir.client.controllers.categories;
 
 
+import com.rusakovich.bsuir.client.controllers.ApplicationPane;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-public class CategoryModal {
+public class CategoryModal extends ApplicationPane {
     private String serverControllerName;
     @FXML
     private Label sectionLabel;

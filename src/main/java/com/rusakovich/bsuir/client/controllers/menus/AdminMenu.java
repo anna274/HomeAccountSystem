@@ -1,10 +1,10 @@
 package com.rusakovich.bsuir.client.controllers.menus;
 
-import com.rusakovich.bsuir.client.controllers.Application;
+import com.rusakovich.bsuir.client.controllers.ApplicationPane;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
-public class AdminMenu extends Menu{
+public class AdminMenu extends ApplicationPane {
     @FXML
     private void logout(ActionEvent event) {
         parentController.logout();

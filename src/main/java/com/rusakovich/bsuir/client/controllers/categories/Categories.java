@@ -2,8 +2,10 @@ package com.rusakovich.bsuir.client.controllers.categories;
 
 import com.rusakovich.bsuir.client.app.ApplicationContext;
 import com.rusakovich.bsuir.client.app.Client;
+import com.rusakovich.bsuir.client.controllers.ApplicationPane;
 import com.rusakovich.bsuir.client.controllers.currencies.EditCurrency;
 import com.rusakovich.bsuir.client.controllers.members.EditMember;
+import com.rusakovich.bsuir.server.entity.AccountMember;
 import com.rusakovich.bsuir.server.entity.Category;
 import com.rusakovich.bsuir.server.entity.Currency;
 import javafx.collections.FXCollections;
@@ -22,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
 
-public class Categories {
+public class Categories extends ApplicationPane {
 
     private String serverControllerName = "income_category";
 
@@ -154,30 +156,16 @@ public class Categories {
 
     private void updateTableContent() {
         message.setText("Загрузка...");
-        String query = serverControllerName + "?command=getAll";
-        Map<String, String> params = Client.doRequest(query);
-
-        if(params.get("status").equals("ok")) {
-            if(params.containsKey("data")) {
-                ArrayList<Map<String, String>> categoriesParams = Client.getResponseArray(params.get("data"));
-                ArrayList<Category> categories = new ArrayList<>();
-
-                for(Map<String, String> categoryParams : categoriesParams){
-                    Category category = Category.fromMap(categoryParams);
-                    category.setSelected(new CheckBox());
-                    categories.add(category);
-                }
-                table.setItems(FXCollections.observableArrayList(categories));
-
-                if(serverControllerName.equals("income_category")) {
-                    ApplicationContext.getInstance().setIncomeCategories(categories);
-                } else {
-                    ApplicationContext.getInstance().setExpenseCategories(categories);
-                }
-
-            } else {
-                table.setPlaceholder(new Label("Добавьте информацию о категориях. Для этого нажмите кнопку 'Добавить'."));
-            }
+        ArrayList<Category> categories = Categories.getCategoriesFromDB(serverControllerName);
+        System.out.println(categories);
+        table.setItems(FXCollections.observableArrayList(categories));
+        if(categories.size() == 0) {
+            table.setPlaceholder(new Label("Добавьте информацию о категориях. Для этого нажмите кнопку 'Добавить'."));
+        }
+        if(serverControllerName.equals("income_category")) {
+            ApplicationContext.getInstance().setIncomeCategories(categories);
+        } else {
+            ApplicationContext.getInstance().setExpenseCategories(categories);
         }
         message.setText("");
     }
@@ -193,5 +181,24 @@ public class Categories {
 
     public void setServerControllerName(String serverControllerName) {
         this.serverControllerName = serverControllerName;
+    }
+
+    public static ArrayList<Category> getCategoriesFromDB(String serverControllerName){
+        String query = serverControllerName + "?command=getAll";
+        Map<String, String> params = Client.doRequest(query);
+        ArrayList<Category> categories = new ArrayList<>();
+
+        if(params.get("status").equals("ok")) {
+            if(params.containsKey("data")) {
+                ArrayList<Map<String, String>> categoriesParams = Client.getResponseArray(params.get("data"));
+
+                for(Map<String, String> categoryParams : categoriesParams){
+                    Category category = Category.fromMap(categoryParams);
+                    category.setSelected(new CheckBox());
+                    categories.add(category);
+                }
+            }
+        }
+        return categories;
     }
 }

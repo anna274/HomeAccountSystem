@@ -2,11 +2,8 @@ package com.rusakovich.bsuir.client.controllers;
 
 import com.rusakovich.bsuir.client.app.ApplicationContext;
 import com.rusakovich.bsuir.client.app.Client;
-import com.rusakovich.bsuir.client.controllers.menus.Menu;
-import javafx.collections.ObservableArray;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
@@ -33,8 +30,8 @@ public class Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(url));
             Pane menu = loader.load();
             menuPane.getChildren().add(menu);
-            Menu menuController = loader.getController();
-            menuController.setParentController(this);
+            ApplicationPane paneController = loader.getController();
+            paneController.setParentController(this);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -45,8 +42,11 @@ public class Application {
             if(mainPane.getChildren().size() != 0) {
                 mainPane.getChildren().remove(mainPane.getChildren().get(0));
             }
-            Pane newPane = FXMLLoader.load(getClass().getResource(url));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(url));
+            Pane newPane = loader.load();
             mainPane.getChildren().add(newPane);
+            ApplicationPane paneController = loader.getController();
+            paneController.setParentController(this);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -44,6 +44,7 @@ public class Registration {
             error.setText("Пароли не совпадают");
             return;
         }
+        signUpBtn.setText("Создание аккаунта...");
         String query = "account?command=register&login=" + login + "&password=" + password;
         Map<String, String> params = Client.doRequest(query);
         if ("ok".equals(params.get("status"))) {
@@ -51,6 +52,7 @@ public class Registration {
         } else {
             error.setText(params.get("error"));
         }
+        signUpBtn.setText("Создать аккаунт");
     }
 
     @FXML

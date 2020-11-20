@@ -2,18 +2,22 @@ package com.rusakovich.bsuir.client.controllers.bankAccounts;
 
 import com.rusakovich.bsuir.client.app.ApplicationContext;
 import com.rusakovich.bsuir.client.app.Client;
+import com.rusakovich.bsuir.client.controllers.Application;
+import com.rusakovich.bsuir.client.controllers.ApplicationPane;
 import com.rusakovich.bsuir.server.entity.AccountMember;
+import com.rusakovich.bsuir.server.entity.BankAccount;
+import com.rusakovich.bsuir.server.entity.Currency;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
+import java.util.ArrayList;
 import java.util.Map;
 
-public class EditBankAccount {
+public class EditBankAccount extends ApplicationPane {
     @FXML
     private Button editBtn;
     @FXML
@@ -21,33 +25,107 @@ public class EditBankAccount {
     @FXML
     private TextField nameField;
     @FXML
+    private ComboBox<AccountMember> membersList;
+    @FXML
+    private ComboBox<Currency> currenciesList;
+    @FXML
     private Label error;
-    private AccountMember editedMember;
+    private BankAccount editedBankAccount;
 
-    public void setEditedMember(AccountMember editedMember) {
-        this.editedMember = editedMember;
-        nameField.setText(editedMember.getName());
+    public void setEditedBankAccount(BankAccount editedBankAccount) {
+        this.editedBankAccount = editedBankAccount;
+        AccountMember currentOwner = ApplicationContext.getInstance().findMemberById(editedBankAccount.getMemberId());
+        Currency currency = ApplicationContext.getInstance().findCurrencyById(editedBankAccount.getCurrencyId());
+        nameField.setText(editedBankAccount.getName());
+        membersList.setValue(currentOwner);
+        currenciesList.setValue(currency);
+    }
+
+    @FXML
+    public void initialize() {
+        membersList.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(AccountMember product) {
+                if(product == null) {
+                    return "";
+                }
+                return product.getName();
+            }
+
+            @Override
+            public AccountMember fromString(final String string) {
+                AccountMember accountMember = new AccountMember();
+                accountMember.setName(string);
+                return accountMember;
+            }
+        });
+
+        currenciesList.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(Currency currency) {
+                if(currency == null) {
+                    return "";
+                }
+                return currency.getName();
+            }
+
+            @Override
+            public Currency fromString(final String string) {
+                Currency currency = new Currency();
+                currency.setName(string);
+                return currency;
+            }
+        });
+
+        ArrayList<AccountMember> members = ApplicationContext.getInstance().getMembersList();
+        ArrayList<Currency> currencies = ApplicationContext.getInstance().getCurrencies();
+
+        membersList.setItems(FXCollections.observableArrayList(members));
+        currenciesList.setItems(FXCollections.observableArrayList(currencies));
     }
 
     @FXML
     private void edit(ActionEvent event) {
         String name = nameField.getText();
+        AccountMember owner = membersList.getValue();
+        Currency currency = currenciesList.getValue();
         if(name.equals("")) {
             error.setText("Введите имя");
             return;
         }
         editBtn.setText("Обновление...");
-        Long accountId = ApplicationContext.getInstance().getCurrentAccount().getId();
-        String query = "account_member?command=update&id=" + editedMember.getId() +"&name=" + name + "&accountId=" + accountId;
-        Map<String, String> params = Client.doRequest(query);
 
-        editBtn.setText("Обновить");
-        if ("ok".equals(params.get("status"))) {
-            cancel(null);
-        } else {
-            error.setText(params.get("error"));
+        ArrayList<BankAccount> bankAccounts = ApplicationContext.getInstance().getBankAccounts();
+        ArrayList<BankAccount> updated = new ArrayList<>();
+        for(BankAccount ba: bankAccounts) {
+            if(ba.getId().equals(editedBankAccount.getId())) {
+                BankAccount ba2 = new BankAccount();
+                ba2.setId(ba.getId());
+                ba2.setName(name);
+                ba2.setCurrencyId(currency.getId());
+                ba2.setMemberId(owner.getId());
+                ba2.setMemberAccountId(owner.getAccountId());
+                updated.add(ba2);
+            } else {
+                updated.add(ba);
+            }
         }
-
+        System.out.println(updated);
+        ApplicationContext.getInstance().setBankAccounts(updated);
+//        String query = "bank_account?command=update" +
+//                "&id=" + editedBankAccount.getId() +
+//                "&name=" + name +
+//                "&currencyId=" + currency.getId() +
+//                "&memberAccountId=" + owner.getAccountId() +
+//                "&memberId=" + owner.getId();
+//        Map<String, String> params = Client.doRequest(query);
+//        editBtn.setText("Обновить");
+//        if ("ok".equals(params.get("status"))) {
+//            cancel(null);
+//        } else {
+//            error.setText(params.get("error"));
+//        }
+        cancel(null);
     }
 
     @FXML

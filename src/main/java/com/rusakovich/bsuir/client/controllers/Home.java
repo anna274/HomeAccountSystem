@@ -1,5 +1,4 @@
 package com.rusakovich.bsuir.client.controllers;
 
-public class ConfirmationAlert {
-
+public class Home extends ApplicationPane{
 }

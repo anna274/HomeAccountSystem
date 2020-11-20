@@ -2,6 +2,7 @@ package com.rusakovich.bsuir.client.controllers.settings;
 
 import com.rusakovich.bsuir.client.app.ApplicationContext;
 import com.rusakovich.bsuir.client.app.Client;
+import com.rusakovich.bsuir.client.controllers.ApplicationPane;
 import com.rusakovich.bsuir.server.entity.Account;
 import com.rusakovich.bsuir.server.entity.AccountMember;
 import javafx.event.ActionEvent;
@@ -14,7 +15,7 @@ import javafx.stage.Stage;
 
 import java.util.Map;
 
-public class ChangePassword {
+public class ChangePassword extends ApplicationPane {
     @FXML
     private Button editBtn;
     @FXML

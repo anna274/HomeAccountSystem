@@ -83,6 +83,4 @@ public class AccountMember {
     public int hashCode() {
         return Objects.hash(id, name, accountId);
     }
-
-
 }

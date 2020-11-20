@@ -58,7 +58,7 @@ public class AccountServiceImpl implements AccountService {
         if(account != null && account.getPassword().equals(password)) {
             return account;
         } else {
-            throw new IllegalAccessException("Incorrect login or password");
+            throw new IllegalAccessException("Неверный логин или пароль");
         }
     }
 }

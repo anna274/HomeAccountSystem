@@ -7,12 +7,12 @@ import java.util.ArrayList;
 public class ApplicationContext {
     private static ApplicationContext instance;
     private Account currentAccount;
-    private ArrayList<Account> accountsList = new ArrayList<>();
-    private ArrayList<AccountMember> membersList = new ArrayList<>();
-    private ArrayList<Currency> currencies = new ArrayList<>();
+    private ArrayList<Account> accountsList = null;
+    private ArrayList<AccountMember> membersList = null;
+    private ArrayList<Currency> currencies = null;
     private ArrayList<BankAccount> bankAccounts = new ArrayList<>();
-    private ArrayList<Category> incomeCategories = new ArrayList<>();
-    private ArrayList<Category> expenseCategories = new ArrayList<>();
+    private ArrayList<Category> incomeCategories = null;
+    private ArrayList<Category> expenseCategories = null;
 
     private ApplicationContext() {
     }
@@ -71,6 +71,30 @@ public class ApplicationContext {
 
     public void setExpenseCategories(ArrayList<Category> expenseCategories) {
         this.expenseCategories = expenseCategories;
+    }
+
+    public Currency findCurrencyById(Long id) {
+        if(currencies == null) {
+            return new Currency();
+        }
+        for(Currency currency: currencies) {
+            if(currency.getId().equals(id)) {
+                return currency;
+            }
+        }
+        return new Currency();
+    }
+
+    public AccountMember findMemberById(Long id) {
+        if(membersList == null) {
+            return new AccountMember();
+        }
+        for(AccountMember member: membersList) {
+            if(member.getId().equals(id)) {
+                return member;
+            }
+        }
+        return new AccountMember();
     }
 
     public static ApplicationContext getInstance() {

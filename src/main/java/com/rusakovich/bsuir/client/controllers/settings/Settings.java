@@ -2,6 +2,7 @@ package com.rusakovich.bsuir.client.controllers.settings;
 
 import com.rusakovich.bsuir.client.app.ApplicationContext;
 import com.rusakovich.bsuir.client.app.Client;
+import com.rusakovich.bsuir.client.controllers.ApplicationPane;
 import com.rusakovich.bsuir.server.entity.Account;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,7 +16,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Map;
 
-public class Settings {
+public class Settings extends ApplicationPane {
     @FXML
     private Label loginLabel;
 

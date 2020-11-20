@@ -14,11 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BankAccountDaoImpl implements BankAccountDao {
-    private static final String SELECT_BANK_ACCOUNTS_BY_MEMBER_ID = "SELECT * FROM bank_account WHERE member_id = ?";
-    private static final String SELECT_BANK_ACCOUNTS_BY_MEMBER_ACCOUNT_ID = "SELECT * FROM bank_account WHERE member_account_id = ?";
+    private static final String SELECT_BANK_ACCOUNTS_BY_MEMBER_ID = "SELECT * FROM bank_account WHERE member_account_id = ?";
+    private static final String SELECT_BANK_ACCOUNTS_BY_MEMBER_ACCOUNT_ID = "SELECT * FROM bank_account WHERE account_id = ?";
     private static final String SELECT_BANK_ACCOUNT_BY_ID = "SELECT * FROM bank_account WHERE id = ?";
-    private static final String INSERT_BANK_ACCOUNT = "INSERT INTO bank_account ( name, currency_id, member_id, member_account_id ) VALUES (?, ?, ?, ?)";
-    private static final String UPDATE_BANK_ACCOUNT = "UPDATE bank_account SET name = ?,currency_id = ?, member_id = ?, member_account_id WHERE id = ?";
+    private static final String INSERT_BANK_ACCOUNT = "INSERT INTO bank_account ( name, currency_id, member_account_id, account_id, currency_id1   ) VALUES (?, ?, ?, ?, ?)";
+    private static final String UPDATE_BANK_ACCOUNT = "UPDATE bank_account SET name = ?,currency_id = ?, member_account_id = ?, account_id = ? WHERE id = ?";
     private static final String DELETE_BANK_ACCOUNT = "DELETE FROM bank_account WHERE id = ?";
 
     @Override
@@ -67,6 +67,7 @@ public class BankAccountDaoImpl implements BankAccountDao {
             statement.setLong(2, bankAccount.getCurrencyId());
             statement.setLong(3, bankAccount.getMemberId());
             statement.setLong(4, bankAccount.getMemberAccountId());
+            statement.setLong(5, Long.parseLong("0"));
             statement.executeUpdate();
         }
     }

@@ -1,9 +1,7 @@
-package com.rusakovich.bsuir.client.controllers.menus;
+package com.rusakovich.bsuir.client.controllers;
 
-import com.rusakovich.bsuir.client.controllers.Application;
-
-public class Menu {
-    Application parentController;
+public class ApplicationPane {
+    public Application parentController;
 
     public Application getParentController() {
         return parentController;

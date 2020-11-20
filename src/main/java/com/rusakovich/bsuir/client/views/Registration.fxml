@@ -6,16 +6,16 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rusakovich.bsuir.client.controllers.Registration">
    <children>
-      <TextField fx:id="passwordField" layoutX="159.0" layoutY="160.0" prefHeight="35.0" prefWidth="270.0" promptText="Password" />
-      <TextField fx:id="loginField" layoutX="158.0" layoutY="113.0" prefHeight="35.0" prefWidth="270.0" promptText="Login" />
-      <TextField fx:id="repeatPasswordField" layoutX="158.0" layoutY="206.0" prefHeight="35.0" prefWidth="270.0" promptText="Repeat password" />
-      <Label layoutX="229.0" layoutY="53.0" prefHeight="28.0" prefWidth="127.0" text="Registration" textAlignment="CENTER">
+      <TextField fx:id="passwordField" layoutX="159.0" layoutY="160.0" prefHeight="35.0" prefWidth="270.0" promptText="Пароль" />
+      <TextField fx:id="loginField" layoutX="158.0" layoutY="113.0" prefHeight="35.0" prefWidth="270.0" promptText="Логин" />
+      <TextField fx:id="repeatPasswordField" layoutX="158.0" layoutY="206.0" prefHeight="35.0" prefWidth="270.0" promptText="Повторите пароль" />
+      <Label layoutX="221.0" layoutY="53.0" prefHeight="28.0" prefWidth="158.0" text="Регистрация" textAlignment="CENTER">
          <font>
             <Font name="Century Gothic" size="22.0" />
          </font>
       </Label>
-      <Button fx:id="signUpBtn" layoutX="211.0" layoutY="263.0" mnemonicParsing="false" onAction="#signUp" prefHeight="30.0" prefWidth="165.0" text="Sign Up" />
-      <Button fx:id="goToLoginBtn" layoutX="210.0" layoutY="303.0" mnemonicParsing="false" onAction="#goToLogin" prefHeight="30.0" prefWidth="165.0" text="Already have an account" />
+      <Button fx:id="signUpBtn" layoutX="211.0" layoutY="263.0" mnemonicParsing="false" onAction="#signUp" prefHeight="30.0" prefWidth="165.0" text="Создать аккаунт" />
+      <Button fx:id="goToLoginBtn" layoutX="210.0" layoutY="303.0" mnemonicParsing="false" onAction="#goToLogin" prefHeight="30.0" prefWidth="165.0" text="Уже есть аккаунт" />
       <Label fx:id="error" alignment="CENTER" contentDisplay="CENTER" layoutX="159.0" layoutY="88.0" prefHeight="17.0" prefWidth="270.0" textAlignment="CENTER" textFill="RED">
          <font>
             <Font name="Century Gothic" size="14.0" />

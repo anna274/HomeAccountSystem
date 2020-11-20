@@ -28,13 +28,14 @@ public class Login {
         String login = loginField.getText();
         String password = passwordField.getText();
         if(login.equals("")) {
-            error.setText("Login is required");
+            error.setText("Введите логин");
             return;
         }
         if(password.equals("")) {
-            error.setText("Password is required");
+            error.setText("Введите пароль");
             return;
         }
+        signInBtn.setText("Авторизация...");
         String query = "account?command=login&login=" + login + "&password=" + password;
         Map<String, String> params = Client.doRequest(query);
         if ("ok".equals(params.get("status"))) {
@@ -45,6 +46,7 @@ public class Login {
         } else {
             error.setText(params.get("error"));
         }
+        signInBtn.setText("Войти...");
     }
 
     @FXML

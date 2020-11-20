@@ -2,6 +2,7 @@ package com.rusakovich.bsuir.client.controllers.currencies;
 
 import com.rusakovich.bsuir.client.app.ApplicationContext;
 import com.rusakovich.bsuir.client.app.Client;
+import com.rusakovich.bsuir.client.controllers.ApplicationPane;
 import com.rusakovich.bsuir.server.entity.Currency;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,7 +13,7 @@ import javafx.stage.Stage;
 
 import java.util.Map;
 
-public class EditCurrency {
+public class EditCurrency extends ApplicationPane {
     @FXML
     private Button editBtn;
     @FXML

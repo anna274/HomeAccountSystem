@@ -2,9 +2,11 @@ package com.rusakovich.bsuir.client.controllers.bankAccounts;
 
 import com.rusakovich.bsuir.client.app.ApplicationContext;
 import com.rusakovich.bsuir.client.app.Client;
-import com.rusakovich.bsuir.server.entity.AccountMember;
+import com.rusakovich.bsuir.client.controllers.ApplicationPane;
+import com.rusakovich.bsuir.client.controllers.currencies.Currencies;
+import com.rusakovich.bsuir.client.controllers.members.Members;
 import com.rusakovich.bsuir.server.entity.BankAccount;
-import com.rusakovich.bsuir.server.entity.Currency;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,6 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Region;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -21,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
 
-public class BankAccounts {
+public class BankAccounts extends ApplicationPane {
 
     @FXML
     private TableColumn<Long, String> idColumn;
@@ -30,11 +33,11 @@ public class BankAccounts {
     @FXML
     private TableColumn<BankAccount, String> nameColumn;
     @FXML
-    private TableColumn<AccountMember, String> ownerColumn;
+    private TableColumn<BankAccount, String> ownerColumn;
     @FXML
     private TableColumn<BankAccount, String> balanceColumn;
     @FXML
-    private TableColumn<Currency, String> currencyColumn;
+    private TableColumn<BankAccount, String> currencyColumn;
     @FXML
     private TableView<BankAccount> table;
     @FXML
@@ -46,24 +49,59 @@ public class BankAccounts {
 
     @FXML
     public void initialize() {
+        ApplicationContext store = ApplicationContext.getInstance();
+
+        if(store.getCurrencies() == null) {
+            store.setCurrencies(Currencies.getCurrenciesFromDB());
+        }
+
+        if(store.getMembersList() == null) {
+            store.setMembersList(Members.getMembersFromDB());
+        }
 
         table.setPlaceholder(new Label("Загрузка ..."));
 
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        ownerColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        currencyColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         balanceColumn.setCellValueFactory(new PropertyValueFactory<>("balance"));
         selectionColumn.setCellValueFactory(new PropertyValueFactory<>("selected"));
+
+        currencyColumn.setCellValueFactory(
+                cell -> new SimpleStringProperty(
+                    store.findCurrencyById(cell.getValue().getCurrencyId()).getName()
+                )
+        );
+        ownerColumn.setCellValueFactory(
+                cell -> new SimpleStringProperty(
+                        store.findMemberById(cell.getValue().getMemberId()).getName()
+                )
+        );
 
         updateTableContent();
     }
 
+    private void showMembersModal() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        alert.setTitle("");
+        alert.setHeaderText("Нет информации о членах семьи. Добаление счетов заблокировано");
+        alert.setContentText("Счёт должен быть привязан к члену семьи, но записей о членах семьи нет. Для устранения этой проблемы, перейдите во вкладку 'Участники' " +
+                "и добавьте информацию о членах семьи. После вы сможете добавить банковский счёт");
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.get() == ButtonType.OK){
+            parentController.switchMainPane("../views/members/Members.fxml");
+        }
+    }
+
     @FXML
     public void addBankAccount() {
+        if(ApplicationContext.getInstance().getMembersList().size() ==0) {
+            showMembersModal();
+            return;
+        }
         try {
             Stage stage = new Stage();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/members/AddMember.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/bankAccounts/AddBankAccount.fxml"));
             Parent root = loader.load();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root));
@@ -76,32 +114,32 @@ public class BankAccounts {
 
     @FXML
     public void editBankAccount() {
-//        try {
-//            ArrayList<AccountMember> selectedMembers = getSelectedMembers();
-//
-//            if(selectedMembers.size() == 0){
-//                message.setText("Для редактирования выделите запись из таблицы");
-//                return;
-//            }
-//            if(selectedMembers.size() > 1){
-//                message.setText("Функция 'Редактировать' активна только при одной выделенной записи");
-//                return;
-//            }
-//            Stage stage = new Stage();
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/members/EditMember.fxml"));
-//            Parent root = loader.load();
-//            stage.initModality(Modality.APPLICATION_MODAL);
-//            stage.setScene(new Scene(root));
-//
-//            com.rusakovich.bsuir.client.controllers.members.EditCurrency editCurrencyController = loader.getController();
-//            editCurrencyController.setEditedMember(selectedMembers.get(0));
-//
-//            stage.showAndWait();
-//
-//            updateTableContent();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            ArrayList<BankAccount> selectedBankAccounts = getSelectedBankAccounts();
+
+            if(selectedBankAccounts.size() == 0){
+                message.setText("Для редактирования выделите запись из таблицы");
+                return;
+            }
+            if(selectedBankAccounts.size() > 1){
+                message.setText("Функция 'Редактировать' активна только при одной выделенной записи");
+                return;
+            }
+
+            Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/bankAccounts/EditBankAccount.fxml"));
+            Parent root = loader.load();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root));
+
+            EditBankAccount editBankAccountController = loader.getController();
+            editBankAccountController.setEditedBankAccount(selectedBankAccounts.get(0));
+            stage.showAndWait();
+
+            updateTableContent();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -142,26 +180,38 @@ public class BankAccounts {
     }
 
     private void updateTableContent() {
-//        Long accountId = ApplicationContext.getInstance().getCurrentAccount().getId();
-//        String query = "bank_account?command=getAllByAccountId&accountId=" + accountId;
-//        Map<String, String> params = Client.doRequest(query);
-//        if(params.get("status").equals("ok")) {
-//            if(params.containsKey("data")) {
-//                ArrayList<Map<String, String>> membersParams = Client.getResponseArray(params.get("data"));
-//                ArrayList<BankAccount> bankAccounts = new ArrayList<>();
-//
-//                for(Map<String, String> memberParams : membersParams){
-//                    BankAccount bankAccount = BankAccount.fromMap(memberParams);
-//                    bankAccount.setSelected(new CheckBox());
-//                    bankAccounts.add(bankAccount);
-//                }
-//                table.setItems(FXCollections.observableArrayList(bankAccounts));
-//                ApplicationContext.getInstance().setBankAccounts(bankAccounts);
-//            } else {
-//                table.setPlaceholder(new Label("Добавьте счета. Для этого нажмите кнопку 'Добавить'."));
-//            }
-//        }
-//        message.setText("");
+//        ArrayList<BankAccount> bankAccounts = getBankAccountsFromDB();
+//        ApplicationContext.getInstance().setBankAccounts(bankAccounts);
+        ArrayList<BankAccount> bankAccounts = ApplicationContext.getInstance().getBankAccounts();
+        for(BankAccount ba: bankAccounts) {
+            ba.setSelected(new CheckBox());
+        }
+        if(bankAccounts.size() != 0) {
+            table.setItems(FXCollections.observableArrayList(bankAccounts));
+        } else {
+            table.setPlaceholder(new Label("Добавьте информацию о счетах. Для этого нажмите кнопку 'Добавить'."));
+        }
+        message.setText("");
+    }
+
+    public static ArrayList<BankAccount> getBankAccountsFromDB(){
+        Long accountId = ApplicationContext.getInstance().getCurrentAccount().getId();
+        String query = "bank_account?command=getAllByAccountId&accountId=" + accountId;
+        Map<String, String> params = Client.doRequest(query);
+        ArrayList<BankAccount> bankAccounts = new ArrayList<>();
+
+        if(params.get("status").equals("ok")) {
+            if(params.containsKey("data")) {
+                ArrayList<Map<String, String>> bankAccountsParams = Client.getResponseArray(params.get("data"));
+
+                for(Map<String, String> bankAccountParams : bankAccountsParams){
+                    BankAccount bankAccount = BankAccount.fromMap(bankAccountParams);
+                    bankAccount.setSelected(new CheckBox());
+                    bankAccounts.add(bankAccount);
+                }
+            }
+        }
+        return bankAccounts;
     }
 
     @FXML
