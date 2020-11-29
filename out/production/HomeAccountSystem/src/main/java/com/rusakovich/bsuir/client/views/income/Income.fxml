@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="525.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rusakovich.bsuir.client.controllers.income.Incomes">
+   <children>
+      <Label alignment="CENTER" layoutX="15.0" layoutY="3.0" prefHeight="17.0" prefWidth="771.0" text="Здесь вы можете добавлять, редактировать и удалять записи о доходах семьи.">
+         <font>
+            <Font name="Century Gothic" size="12.0" />
+         </font>
+      </Label>
+      <TableView fx:id="table" layoutX="8.0" layoutY="54.0" prefHeight="340.0" prefWidth="784.0">
+        <columns>
+            <TableColumn fx:id="selectionColumn" prefWidth="24.999984741210938" />
+            <TableColumn fx:id="idColumn" minWidth="0.0" prefWidth="0.0" />
+          <TableColumn fx:id="dateColumn" prefWidth="119.0" text="Дата" />
+            <TableColumn fx:id="bankAccountColumn" prefWidth="171.0" text="Счёт" />
+            <TableColumn fx:id="categoryColumn" prefWidth="186.0" text="Категория" />
+            <TableColumn fx:id="sumColumn" prefWidth="109.0" text="Сумма" />
+            <TableColumn fx:id="noteColumn" prefWidth="173.0" text="Примечание" />
+        </columns>
+      </TableView>
+      <Button layoutX="132.0" layoutY="408.0" mnemonicParsing="false" onAction="#addIncome" prefHeight="25.0" prefWidth="111.0" text="Добавить">
+         <font>
+            <Font name="Century Gothic" size="12.0" />
+         </font>
+      </Button>
+      <Button layoutX="259.0" layoutY="408.0" mnemonicParsing="false" onAction="#editIncome" prefHeight="25.0" prefWidth="111.0" text="Редактировать">
+         <font>
+            <Font name="Century Gothic" size="12.0" />
+         </font>
+      </Button>
+      <Button fx:id="deleteBtn" layoutX="381.0" layoutY="408.0" mnemonicParsing="false" onAction="#deleteSelectedIncomes" prefHeight="25.0" prefWidth="111.0" text="Удалить">
+         <font>
+            <Font name="Century Gothic" size="12.0" />
+         </font>
+      </Button>
+      <CheckBox fx:id="selectAllCheckbox" layoutX="17.0" layoutY="412.0" mnemonicParsing="false" onAction="#selectAll" text="Выделить всё" />
+      <Label fx:id="message" alignment="CENTER" layoutX="10.0" layoutY="21.0" prefHeight="25.0" prefWidth="784.0" textFill="#43cf7b">
+         <font>
+            <Font name="Century Gothic" size="14.0" />
+         </font></Label>
+      <Separator layoutX="17.0" layoutY="434.0" prefHeight="17.0" prefWidth="771.0" />
+      <Button fx:id="applyFilterBtn" layoutX="446.0" layoutY="456.0" mnemonicParsing="false" onAction="#applyFilter" prefHeight="25.0" prefWidth="151.0" text="Применить фильтр">
+         <font>
+            <Font name="Century Gothic" size="12.0" />
+         </font>
+      </Button>
+      <Button fx:id="removeFilterBtn" layoutX="446.0" layoutY="486.0" mnemonicParsing="false" onAction="#removeFilter" prefHeight="25.0" prefWidth="151.0" text="Сбросить фильтр">
+         <font>
+            <Font name="Century Gothic" size="12.0" />
+         </font>
+      </Button>
+      <Label layoutX="18.0" layoutY="471.0" prefHeight="17.0" prefWidth="57.0" text="Дата" />
+      <DatePicker layoutX="82.0" layoutY="456.0" prefHeight="17.0" prefWidth="117.0" />
+      <DatePicker layoutX="82.0" layoutY="486.0" prefHeight="17.0" prefWidth="117.0" />
+      <Label layoutX="64.0" layoutY="460.0" prefHeight="17.0" prefWidth="11.0" text="С:" />
+      <Label layoutX="60.0" layoutY="490.0" prefHeight="17.0" prefWidth="22.0" text="По:" />
+      <ComboBox fx:id="bankAccountsFilterList" layoutX="323.0" layoutY="456.0" prefHeight="25.0" prefWidth="117.0" />
+      <Label layoutX="265.0" layoutY="460.0" prefHeight="17.0" prefWidth="38.0" text="Счёт" />
+      <ComboBox fx:id="categoriesFilterList" layoutX="323.0" layoutY="486.0" prefHeight="25.0" prefWidth="117.0" />
+      <Label layoutX="265.0" layoutY="490.0" prefHeight="17.0" prefWidth="57.0" text="Категoрия" />
+      <Button layoutX="207.0" layoutY="456.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="22.0">
+         <graphic>
+            <ImageView fitHeight="15.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../assets/images/close%20(1).png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button layoutX="207.0" layoutY="486.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="22.0">
+         <graphic>
+            <ImageView fitHeight="15.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../assets/images/close%20(1).png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+   </children>
+</Pane>

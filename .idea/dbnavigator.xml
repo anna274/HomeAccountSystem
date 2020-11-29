@@ -23,11 +23,7 @@
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
     <show-object-properties value="true" />
-    <loaded-nodes>
-      <connection connection-id="21421c8c-5cf5-4e36-bfc8-cf7a5cdc91fe">
-        <schema name="home_accounting_system" object-types="view, table, procedure, function" />
-      </connection>
-    </loaded-nodes>
+    <loaded-nodes />
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="21421c8c-5cf5-4e36-bfc8-cf7a5cdc91fe">
@@ -39,6 +35,9 @@
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
     <connection id="21421c8c-5cf5-4e36-bfc8-cf7a5cdc91fe" />
+  </component>
+  <component name="DBNavigator.Project.DatasetFilterManager">
+    <filter-actions connection-id="21421c8c-5cf5-4e36-bfc8-cf7a5cdc91fe" dataset="home_accounting_system.account" active-filter-id="" />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
     <last-used-providers />
@@ -299,10 +298,10 @@
     </dataset-editor-settings>
     <code-editor-settings>
       <general>
-        <show-object-navigation-gutter value="false" />
+        <show-object-navigation-gutter value="true" />
         <show-spec-declaration-navigation-gutter value="true" />
         <enable-spellchecking value="true" />
-        <enable-reference-spellchecking value="false" />
+        <enable-reference-spellchecking value="true" />
       </general>
       <confirmations>
         <save-changes value="false" />

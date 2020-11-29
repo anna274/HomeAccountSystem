@@ -1,6 +1,11 @@
 package com.rusakovich.bsuir.server.entity;
 
+import javafx.scene.control.CheckBox;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Map;
 import java.util.Objects;
 
 public class Income {
@@ -10,10 +15,11 @@ public class Income {
     private Long memberAccountId;
     private Long bankAccountId;
     private Long currencyId;
-    private Float sum;
-    private String note;
-    private int quantity;
-    private LocalDateTime date;
+    private Float sum = 0F;
+    private String note = null;
+    private int quantity = 0;
+    private LocalDate date;
+    private CheckBox selected;
 
     public Income() {
     }
@@ -27,7 +33,7 @@ public class Income {
                   Float sum,
                   String note,
                   int quantity,
-                  LocalDateTime date) {
+                  LocalDate date) {
         this.id = id;
         this.categoryId = categoryId;
         this.memberId = memberId;
@@ -112,12 +118,20 @@ public class Income {
         this.quantity = quantity;
     }
 
-    public LocalDateTime getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public CheckBox getSelected() {
+        return selected;
+    }
+
+    public void setSelected(CheckBox selected) {
+        this.selected = selected;
     }
 
     @Override
@@ -143,15 +157,41 @@ public class Income {
 
     @Override
     public String toString() {
-        return "{id=" + id +
-                "&categoryId=" + categoryId +
-                "&sum=" + sum +
-                "&note=" + note +
-                "&quantity=" + quantity +
-                "&date=" + date +
-                "&memberId=" + memberId +
-                "&memberAccountId=" + memberAccountId +
-                "&currencyId=" + currencyId +
-                "&bankAccountId=" + bankAccountId+"}";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MM yyyy");
+        String str ="id:" + id +
+                ",categoryId:" + categoryId +
+                ",sum:" + sum +
+                ",note:" + note +
+                ",quantity:" + quantity +
+                ",date:" + date.format(formatter) +
+                ",memberId:" + memberId +
+                ",memberAccountId:" + memberAccountId +
+                ",currencyId:" + currencyId +
+                ",bankAccountId:" + bankAccountId;
+        if(note != null) {
+            str += ",note:" + note;
+        }
+        return str;
+    }
+
+    public static Income fromMap(Map<String, String> params){
+        Income income = new Income();
+        if(params.get("id") != null) {
+            income.setId(Long.parseLong(params.get("id")));
+        }
+        income.setBankAccountId(Long.parseLong(params.get("bankAccountId")));
+        income.setCategoryId(Long.parseLong(params.get("categoryId")));
+        income.setCurrencyId(Long.parseLong(params.get("currencyId")));
+        income.setMemberId(Long.parseLong(params.get("memberId")));
+        income.setMemberAccountId(Long.parseLong(params.get("memberAccountId")));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MM yyyy");
+        income.setDate(LocalDate.parse(params.get("date"), formatter));
+        if(params.get("note") != null) {
+            income.setNote(params.get("note"));
+        }
+        if(params.get("sum") != null) {
+            income.setSum(Float.parseFloat(params.get("sum")));
+        }
+        return income;
     }
 }

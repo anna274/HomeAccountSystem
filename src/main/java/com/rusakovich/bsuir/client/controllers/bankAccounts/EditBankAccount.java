@@ -95,36 +95,19 @@ public class EditBankAccount extends ApplicationPane {
         }
         editBtn.setText("Обновление...");
 
-        ArrayList<BankAccount> bankAccounts = ApplicationContext.getInstance().getBankAccounts();
-        ArrayList<BankAccount> updated = new ArrayList<>();
-        for(BankAccount ba: bankAccounts) {
-            if(ba.getId().equals(editedBankAccount.getId())) {
-                BankAccount ba2 = new BankAccount();
-                ba2.setId(ba.getId());
-                ba2.setName(name);
-                ba2.setCurrencyId(currency.getId());
-                ba2.setMemberId(owner.getId());
-                ba2.setMemberAccountId(owner.getAccountId());
-                updated.add(ba2);
-            } else {
-                updated.add(ba);
-            }
+        String query = "bank_account?command=update" +
+                "&id=" + editedBankAccount.getId() +
+                "&name=" + name +
+                "&currencyId=" + currency.getId() +
+                "&memberAccountId=" + owner.getAccountId() +
+                "&memberId=" + owner.getId();
+        Map<String, String> params = Client.doRequest(query);
+        editBtn.setText("Обновить");
+        if ("ok".equals(params.get("status"))) {
+            cancel(null);
+        } else {
+            error.setText(params.get("error"));
         }
-        System.out.println(updated);
-        ApplicationContext.getInstance().setBankAccounts(updated);
-//        String query = "bank_account?command=update" +
-//                "&id=" + editedBankAccount.getId() +
-//                "&name=" + name +
-//                "&currencyId=" + currency.getId() +
-//                "&memberAccountId=" + owner.getAccountId() +
-//                "&memberId=" + owner.getId();
-//        Map<String, String> params = Client.doRequest(query);
-//        editBtn.setText("Обновить");
-//        if ("ok".equals(params.get("status"))) {
-//            cancel(null);
-//        } else {
-//            error.setText(params.get("error"));
-//        }
         cancel(null);
     }
 

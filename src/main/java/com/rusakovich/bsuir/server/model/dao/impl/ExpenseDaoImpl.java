@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -171,7 +172,7 @@ public class ExpenseDaoImpl implements ExpenseDao {
                     resultSet.getLong("currency_id"),
                     resultSet.getFloat("sum"),
                     resultSet.getInt("quantity"),
-                    resultSet.getObject("date", LocalDateTime.class),
+                    resultSet.getObject("date", LocalDate.class),
                     resultSet.getString("note")
             );
         } catch (SQLException e) {

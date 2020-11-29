@@ -2,10 +2,12 @@ package com.rusakovich.bsuir.server.controller.impl;
 
 import com.rusakovich.bsuir.server.controller.Controller;
 import com.rusakovich.bsuir.server.controller.ControllerHelper;
+import com.rusakovich.bsuir.server.entity.BankAccount;
 import com.rusakovich.bsuir.server.entity.Income;
 import com.rusakovich.bsuir.server.model.service.impl.IncomeServiceImpl;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -50,7 +52,7 @@ public class IncomeController implements Controller {
     }
 
     private String add(Map<String, String> params) {
-        Income income = createIncomeObjFromParams(params);
+        Income income = Income.fromMap(params);
         incomeService.addIncome(income);
         return ControllerHelper.getResponse("ok", income.toString(), "");
     }
@@ -61,12 +63,15 @@ public class IncomeController implements Controller {
     }
 
     private String getAllByMemberAccountId(Map<String, String> params) {
-        StringBuilder response = new StringBuilder();
-        List<Income> incomes = incomeService.getIncomesByMemberAccountId(Long.parseLong(params.get("memberAccountId")));
+        List<Income> incomes = incomeService.getIncomesByMemberAccountId(
+                Long.valueOf(params.get("memberAccountId"))
+        );
+        List<String> incomesStr = new ArrayList<String>();
         for (Income income : incomes) {
-            response.append(income.toString());
+            incomesStr.add(income.toString());
         }
-        return ControllerHelper.getResponse("ok", "[" + response + "]", "");
+        String data = String.join(";", incomesStr);
+        return ControllerHelper.getResponse("ok", data, "");
     }
 
     private String getAllByMemberId(Map<String, String> params) {
@@ -100,29 +105,12 @@ public class IncomeController implements Controller {
     }
 
     private String update(Map<String, String> params) {
-        incomeService.updateIncome(
-                createIncomeObjFromParams(params)
-        );
+        incomeService.updateIncome(Income.fromMap(params));
         return ControllerHelper.getResponse("ok", "", "");
     }
 
     private String delete(Map<String, String> params) {
         incomeService.deleteIncome(Long.valueOf(params.get("id")));
         return ControllerHelper.getResponse("ok", "", "");
-    }
-
-    private Income createIncomeObjFromParams(Map<String, String> params) {
-        return new Income(
-                Long.parseLong(params.get("id")),
-                Long.parseLong(params.get("categoryId")),
-                Long.parseLong(params.get("memberId")),
-                Long.parseLong(params.get("memberAccountId")),
-                Long.parseLong(params.get("bankAccountId")),
-                Long.parseLong(params.get("currencyId")),
-                Float.parseFloat(params.get("sum")),
-                params.get("note"),
-                Integer.parseInt(params.get("quantity")),
-                LocalDateTime.parse(params.get("date"))
-        );
     }
 }

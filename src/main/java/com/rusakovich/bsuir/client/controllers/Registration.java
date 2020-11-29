@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 import java.util.Map;
@@ -17,9 +18,9 @@ public class Registration {
     @FXML
     private TextField loginField;
     @FXML
-    private TextField passwordField;
+    private PasswordField passwordField;
     @FXML
-    private TextField repeatPasswordField;
+    private PasswordField repeatPasswordField;
     @FXML
     private Label error;
 

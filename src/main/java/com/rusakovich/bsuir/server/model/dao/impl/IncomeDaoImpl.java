@@ -5,6 +5,7 @@ import com.rusakovich.bsuir.server.model.dao.ConnectionManager;
 import com.rusakovich.bsuir.server.model.dao.IncomeDao;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +17,10 @@ public class IncomeDaoImpl implements IncomeDao {
     private static final String SELECT_INCOME_BY_BANK_ACCOUNT_ID = "SELECT * FROM income WHERE bank_account_id = ?";
     private static final String SELECT_INCOME_IN_DATE_DIAPASON = "SELECT * FROM income WHERE date > ? AND date < ?";
     private static final String INSERT_INCOME =
-            "INSERT INTO income ( sum, note, category_id, quantity, date, bank_account_id, " +
-            "currency_id, member_id, member_account_id ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            "INSERT INTO income ( sum, note, category_id, date, bank_account_id, " +
+            "currency_id, member_id, member_account_id ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String UPDATE_INCOME =
-            "UPDATE income SET sum = ?, note = ?, category_id = ?, quantity = ?, date = ?, " +
+            "UPDATE income SET sum = ?, note = ?, category_id = ?, date = ?, " +
             "bank_account_id = ?, currency_id = ?, member_id = ?, member_account_id = ? WHERE id = ?";
     private static final String DELETE_INCOME = "DELETE FROM income WHERE id = ?";
 
@@ -99,12 +100,11 @@ public class IncomeDaoImpl implements IncomeDao {
             statement.setFloat(1, income.getSum());
             statement.setString(2, income.getNote());
             statement.setLong(3, income.getCategoryId());
-            statement.setInt(4, income.getQuantity());
-            statement.setObject(5, income.getDate());
-            statement.setLong(6, income.getBankAccountId());
-            statement.setLong(7, income.getCurrencyId());
-            statement.setLong(8, income.getMemberId());
-            statement.setLong(9, income.getMemberAccountId());
+            statement.setObject(4, income.getDate());
+            statement.setLong(5, income.getBankAccountId());
+            statement.setLong(6, income.getCurrencyId());
+            statement.setLong(7, income.getMemberId());
+            statement.setLong(8, income.getMemberAccountId());
             statement.executeUpdate();
         }
     }
@@ -138,13 +138,12 @@ public class IncomeDaoImpl implements IncomeDao {
             statement.setFloat(1, income.getSum());
             statement.setString(2, income.getNote());
             statement.setLong(3, income.getCategoryId());
-            statement.setInt(4, income.getQuantity());
-            statement.setObject(5, income.getDate());
-            statement.setLong(6, income.getBankAccountId());
-            statement.setLong(7, income.getCurrencyId());
-            statement.setLong(8, income.getMemberId());
-            statement.setLong(9, income.getMemberAccountId());
-            statement.setLong(10, income.getId());
+            statement.setObject(4, income.getDate());
+            statement.setLong(5, income.getBankAccountId());
+            statement.setLong(6, income.getCurrencyId());
+            statement.setLong(7, income.getMemberId());
+            statement.setLong(8, income.getMemberAccountId());
+            statement.setLong(9, income.getId());
             statement.executeUpdate();
         }
     }
@@ -169,7 +168,7 @@ public class IncomeDaoImpl implements IncomeDao {
                     resultSet.getFloat("sum"),
                     resultSet.getString("note"),
                     resultSet.getInt("quantity"),
-                    resultSet.getObject("date", LocalDateTime.class)
+                    resultSet.getObject("date", LocalDate.class)
             );
         } catch (SQLException e) {
             e.printStackTrace();

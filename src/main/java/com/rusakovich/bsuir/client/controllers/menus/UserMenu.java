@@ -21,8 +21,17 @@ public class UserMenu extends ApplicationPane {
     }
 
     @FXML
+    private void goToIncomes(ActionEvent event) {
+        parentController.switchMainPane("../views/income/Income.fxml");
+    }
+
+    @FXML
+    private void goToExpenses(ActionEvent actionEvent) {
+        parentController.switchMainPane("../views/expenses/Expenses.fxml");
+    }
+
+    @FXML
     private void goToSettings(ActionEvent event) {
         parentController.switchMainPane("../views/settings/Settings.fxml");
     }
-
 }

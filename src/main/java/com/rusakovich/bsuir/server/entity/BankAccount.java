@@ -2,6 +2,7 @@ package com.rusakovich.bsuir.server.entity;
 
 import javafx.scene.control.CheckBox;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 
@@ -152,5 +153,20 @@ public class BankAccount {
             bankAccount.setIncome(bankAccount.getIncome() - bankAccount.getExpenses());
         }
         return bankAccount;
+    }
+
+    public void setBalanceFromIncomesAndExpenses(ArrayList<Income> incomes, ArrayList<Expense> expenses) {
+        float balance = 0.0F;
+        for(Income income: incomes) {
+            if(income.getBankAccountId().equals(id)) {
+                balance += income.getSum();
+            }
+        }
+        for(Expense expense: expenses) {
+            if(expense.getBankAccountId().equals(id)) {
+                balance -= expense.getSum();
+            }
+        }
+        this.balance = balance;
     }
 }

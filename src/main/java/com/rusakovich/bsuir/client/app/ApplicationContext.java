@@ -10,9 +10,11 @@ public class ApplicationContext {
     private ArrayList<Account> accountsList = null;
     private ArrayList<AccountMember> membersList = null;
     private ArrayList<Currency> currencies = null;
-    private ArrayList<BankAccount> bankAccounts = new ArrayList<>();
+    private ArrayList<BankAccount> bankAccounts = null;
     private ArrayList<Category> incomeCategories = null;
     private ArrayList<Category> expenseCategories = null;
+    private ArrayList<Income> incomes = null;
+    private ArrayList<Expense> expenses = null;
 
     private ApplicationContext() {
     }
@@ -73,6 +75,22 @@ public class ApplicationContext {
         this.expenseCategories = expenseCategories;
     }
 
+    public ArrayList<Income> getIncomes() {
+        return incomes;
+    }
+
+    public void setIncomes(ArrayList<Income> incomes) {
+        this.incomes = incomes;
+    }
+
+    public ArrayList<Expense> getExpenses() {
+        return expenses;
+    }
+
+    public void setExpenses(ArrayList<Expense> expenses) {
+        this.expenses = expenses;
+    }
+
     public Currency findCurrencyById(Long id) {
         if(currencies == null) {
             return new Currency();
@@ -83,6 +101,42 @@ public class ApplicationContext {
             }
         }
         return new Currency();
+    }
+
+    public Category findIncomeCategoryById (Long id) {
+        if(incomeCategories == null) {
+            return new Category();
+        }
+        for(Category category: incomeCategories) {
+            if(category.getId().equals(id)) {
+                return category;
+            }
+        }
+        return new Category();
+    }
+
+    public Category findExpenseCategoryById (Long id) {
+        if(expenseCategories == null) {
+            return new Category();
+        }
+        for(Category category: expenseCategories) {
+            if(category.getId().equals(id)) {
+                return category;
+            }
+        }
+        return new Category();
+    }
+
+    public BankAccount findBankAccountById (Long id) {
+        if(bankAccounts == null) {
+            return new BankAccount();
+        }
+        for(BankAccount bankAccount: bankAccounts) {
+            if(bankAccount.getId().equals(id)) {
+                return bankAccount;
+            }
+        }
+        return new BankAccount();
     }
 
     public AccountMember findMemberById(Long id) {

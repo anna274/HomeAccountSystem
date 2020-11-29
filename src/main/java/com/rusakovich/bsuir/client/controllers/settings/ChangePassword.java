@@ -7,10 +7,7 @@ import com.rusakovich.bsuir.server.entity.Account;
 import com.rusakovich.bsuir.server.entity.AccountMember;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.util.Map;
@@ -21,11 +18,11 @@ public class ChangePassword extends ApplicationPane {
     @FXML
     private Button cancelBtn;
     @FXML
-    private TextField oldPasswordField;
+    private PasswordField oldPasswordField;
     @FXML
-    private TextField newPasswordField;
+    private PasswordField newPasswordField;
     @FXML
-    private TextField newPasswordRepeatField;
+    private PasswordField newPasswordRepeatField;
     @FXML
     private Label error;
 

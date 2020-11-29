@@ -11,7 +11,6 @@
             <Font name="Century Gothic" size="22.0" />
          </font></Label>
       <TextField fx:id="loginField" layoutX="169.0" layoutY="135.0" prefHeight="35.0" prefWidth="270.0" promptText="Логин" />
-      <TextField fx:id="passwordField" layoutX="169.0" layoutY="191.0" prefHeight="35.0" prefWidth="270.0" promptText="Пароль" />
       <Button fx:id="signInBtn" layoutX="226.0" layoutY="253.0" mnemonicParsing="false" onAction="#signIn" prefHeight="30.0" prefWidth="165.0" text="Войти" />
       <Button fx:id="goToRegistrationBtn" layoutX="226.0" layoutY="294.0" mnemonicParsing="false" onAction="#goToRegistration" prefHeight="30.0" prefWidth="165.0" text="Создать аккаунт" />
       <Label fx:id="error" alignment="CENTER" layoutX="170.0" layoutY="100.0" prefHeight="17.0" prefWidth="270.0" textFill="#ff0505">
@@ -19,5 +18,6 @@
             <Font name="Century Gothic" size="14.0" />
          </font>
       </Label>
+      <PasswordField fx:id="passwordField" layoutX="170.0" layoutY="187.0" prefHeight="35.0" prefWidth="270.0" promptText="Пароль" />
    </children>
 </Pane>

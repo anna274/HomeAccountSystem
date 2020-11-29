@@ -1,6 +1,11 @@
 package com.rusakovich.bsuir.server.entity;
 
+import javafx.scene.control.CheckBox;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Map;
 import java.util.Objects;
 
 public class Expense {
@@ -13,7 +18,8 @@ public class Expense {
     private Float sum;
     private String note;
     private int quantity;
-    private LocalDateTime date = LocalDateTime.now();
+    private LocalDate date;
+    private CheckBox selected;
 
     public Expense() {
     }
@@ -26,7 +32,7 @@ public class Expense {
                    Long currencyId,
                    Float sum,
                    int quantity,
-                   LocalDateTime date,
+                   LocalDate date,
                    String note) {
         this.id = id;
         this.categoryId = categoryId;
@@ -52,7 +58,7 @@ public class Expense {
         return sum;
     }
 
-    public LocalDateTime getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
@@ -92,7 +98,7 @@ public class Expense {
         this.categoryId = categoryId;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -128,6 +134,14 @@ public class Expense {
         this.currencyId = currencyId;
     }
 
+    public CheckBox getSelected() {
+        return selected;
+    }
+
+    public void setSelected(CheckBox selected) {
+        this.selected = selected;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -151,16 +165,41 @@ public class Expense {
 
     @Override
     public String toString() {
-        return "{id=" + id +
-                "&categoryId=" + categoryId +
-                "&sum=" + sum +
-                "&note=" + note +
-                "&quantity=" + quantity +
-                "&date=" + date +
-                "&memberId=" + memberId +
-                "&memberAccountId=" + memberAccountId +
-                "&currencyId=" + currencyId +
-                "&bankAccountId=" + bankAccountId+"}";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MM yyyy");
+        String str = "id:" + id +
+                ",categoryId:" + categoryId +
+                ",sum:" + sum +
+                ",quantity:" + quantity +
+                ",date:" + date.format(formatter) +
+                ",memberId:" + memberId +
+                ",memberAccountId:" + memberAccountId +
+                ",currencyId:" + currencyId +
+                ",bankAccountId:" + bankAccountId;
+        if(note != null) {
+            str += ",note:" + note;
+        }
+        return str;
+    }
+
+    public static Expense fromMap(Map<String, String> params){
+        Expense expense = new Expense();
+        if(params.get("id") != null) {
+            expense.setId(Long.parseLong(params.get("id")));
+        }
+        expense.setBankAccountId(Long.parseLong(params.get("bankAccountId")));
+        expense.setCategoryId(Long.parseLong(params.get("categoryId")));
+        expense.setCurrencyId(Long.parseLong(params.get("currencyId")));
+        expense.setMemberId(Long.parseLong(params.get("memberId")));
+        expense.setMemberAccountId(Long.parseLong(params.get("memberAccountId")));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MM yyyy");
+        expense.setDate(LocalDate.parse(params.get("date"), formatter));
+        if(params.get("note") != null) {
+            expense.setNote(params.get("note"));
+        }
+        if(params.get("sum") != null) {
+            expense.setSum(Float.parseFloat(params.get("sum")));
+        }
+        return expense;
     }
 }
 

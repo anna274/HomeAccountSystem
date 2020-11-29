@@ -110,30 +110,19 @@ public class AddBankAccount extends ApplicationPane {
             error.setText("Выберите валюту счёта");
             return;
         }
-        ArrayList<BankAccount> bankAccounts = ApplicationContext.getInstance().getBankAccounts();
-        BankAccount newBankAccount = new BankAccount();
-        newBankAccount.setId((long) bankAccounts.size() + 1);
-        newBankAccount.setName(name);
-        newBankAccount.setMemberId(owner.getId());
-        newBankAccount.setMemberAccountId(owner.getAccountId());
-        newBankAccount.setCurrencyId(currency.getId());
-        bankAccounts.add(newBankAccount);
-        System.out.println(newBankAccount);
-        System.out.println(bankAccounts);
-        ApplicationContext.getInstance().setBankAccounts(bankAccounts);
-//        addBtn.setText("Сохранение...");
-//        String query = "bank_account?command=add" +
-//                "&name=" + name +
-//                "&memberId=" + owner.getId() +
-//                "&memberAccountId=" + owner.getAccountId() +
-//                "&currencyId=" + currency.getId();
-//        Map<String, String> params = Client.doRequest(query);
-//        addBtn.setText("Добавить");
-//        if ("ok".equals(params.get("status"))) {
-//            cancel(null);
-//        } else {
-//            error.setText(params.get("error"));
-//        }
+        addBtn.setText("Сохранение...");
+        String query = "bank_account?command=add" +
+                "&name=" + name +
+                "&memberId=" + owner.getId() +
+                "&memberAccountId=" + owner.getAccountId() +
+                "&currencyId=" + currency.getId();
+        Map<String, String> params = Client.doRequest(query);
+        addBtn.setText("Добавить");
+        if ("ok".equals(params.get("status"))) {
+            cancel(null);
+        } else {
+            error.setText(params.get("error"));
+        }
         cancel(null);
     }
 

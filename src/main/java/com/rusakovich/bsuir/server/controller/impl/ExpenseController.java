@@ -3,9 +3,12 @@ package com.rusakovich.bsuir.server.controller.impl;
 import com.rusakovich.bsuir.server.controller.Controller;
 import com.rusakovich.bsuir.server.controller.ControllerHelper;
 import com.rusakovich.bsuir.server.entity.Expense;
+import com.rusakovich.bsuir.server.entity.Income;
 import com.rusakovich.bsuir.server.model.service.impl.ExpenseServiceImpl;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -50,7 +53,7 @@ public class ExpenseController implements Controller {
     }
 
     private String add(Map<String, String> params) {
-        Expense expense = createExpenseObjFromParams(params);
+        Expense expense = Expense.fromMap(params);
         expenseService.addExpense(expense);
         return ControllerHelper.getResponse("ok", expense.toString(), "");
     }
@@ -61,12 +64,15 @@ public class ExpenseController implements Controller {
     }
 
     private String getAllByMemberAccountId(Map<String, String> params) {
-        StringBuilder response = new StringBuilder();
-        List<Expense> expenses = expenseService.getExpensesByMemberAccountId(Long.parseLong(params.get("memberAccountId")));
+        List<Expense> expenses = expenseService.getExpensesByMemberAccountId(
+                Long.valueOf(params.get("memberAccountId"))
+        );
+        List<String> expensesStr = new ArrayList<String>();
         for (Expense expense : expenses) {
-            response.append(expense.toString());
+            expensesStr.add(expense.toString());
         }
-        return ControllerHelper.getResponse("ok", "[" + response + "]", "");
+        String data = String.join(";", expensesStr);
+        return ControllerHelper.getResponse("ok", data, "");
     }
 
     private String getAllByMemberId(Map<String, String> params) {
@@ -100,29 +106,12 @@ public class ExpenseController implements Controller {
     }
 
     private String update(Map<String, String> params) {
-        expenseService.updateExpense(
-                createExpenseObjFromParams(params)
-        );
+        expenseService.updateExpense(Expense.fromMap(params));
         return ControllerHelper.getResponse("ok", "", "");
     }
 
     private String delete(Map<String, String> params) {
         expenseService.deleteExpense(Long.valueOf(params.get("id")));
         return ControllerHelper.getResponse("ok", "", "");
-    }
-
-    private Expense createExpenseObjFromParams(Map<String, String> params) {
-        return new Expense(
-                Long.parseLong(params.get("id")),
-                Long.parseLong(params.get("categoryId")),
-                Long.parseLong(params.get("memberId")),
-                Long.parseLong(params.get("memberAccountId")),
-                Long.parseLong(params.get("bankAccountId")),
-                Long.parseLong(params.get("currencyId")),
-                Float.parseFloat(params.get("sum")),
-                Integer.parseInt(params.get("quantity")),
-                LocalDateTime.parse(params.get("date")),
-                params.get("note")
-        );
     }
 }

@@ -4,8 +4,12 @@ import com.rusakovich.bsuir.client.app.ApplicationContext;
 import com.rusakovich.bsuir.client.app.Client;
 import com.rusakovich.bsuir.client.controllers.ApplicationPane;
 import com.rusakovich.bsuir.client.controllers.currencies.Currencies;
+import com.rusakovich.bsuir.client.controllers.expenses.Expenses;
+import com.rusakovich.bsuir.client.controllers.income.Incomes;
 import com.rusakovich.bsuir.client.controllers.members.Members;
 import com.rusakovich.bsuir.server.entity.BankAccount;
+import com.rusakovich.bsuir.server.entity.Expense;
+import com.rusakovich.bsuir.server.entity.Income;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -57,6 +61,14 @@ public class BankAccounts extends ApplicationPane {
 
         if(store.getMembersList() == null) {
             store.setMembersList(Members.getMembersFromDB());
+        }
+
+        if(store.getIncomes() == null) {
+            store.setIncomes(Incomes.getIncomesFromDB());
+        }
+
+        if(store.getExpenses() == null) {
+            store.setExpenses(Expenses.getExpensesFromDB());
         }
 
         table.setPlaceholder(new Label("Загрузка ..."));
@@ -144,28 +156,28 @@ public class BankAccounts extends ApplicationPane {
 
     @FXML
     public void deleteSelectedBankAccounts() {
-//        ArrayList<AccountMember> selectedMembers = getSelectedMembers();
-//        int selectedNumber = selectedMembers.size();
-//
-//        if(selectedNumber == 0) {
-//            message.setText("Выберите записи для удаления");
-//            return;
-//        }
-//        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-//        alert.setTitle("");
-//        alert.setHeaderText("Удаление записей");
-//        alert.setContentText("Вы уверены, что хотите удалить " +  selectedNumber + " записей?");
-//
-//        Optional<ButtonType> result = alert.showAndWait();
-//        if (result.get() == ButtonType.OK){
-//            deleteBtn.setText("Удаление...");
-//            for(AccountMember member : selectedMembers) {
-//                String query = "account_member?command=delete&id=" + member.getId();
-//                Client.doRequest(query);
-//            }
-//            updateTableContent();
-//            deleteBtn.setText("Удалить");
-//        }
+        ArrayList<BankAccount> selectedMembers = getSelectedBankAccounts();
+        int selectedNumber = selectedMembers.size();
+
+        if(selectedNumber == 0) {
+            message.setText("Выберите записи для удаления");
+            return;
+        }
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("");
+        alert.setHeaderText("Удаление записей");
+        alert.setContentText("Вы уверены, что хотите удалить " +  selectedNumber + " записей?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            deleteBtn.setText("Удаление...");
+            for(BankAccount bankAccount : selectedMembers) {
+                String query = "bank_account?command=delete&id=" + bankAccount.getId();
+                Client.doRequest(query);
+            }
+            updateTableContent();
+            deleteBtn.setText("Удалить");
+        }
     }
 
     private ArrayList<BankAccount> getSelectedBankAccounts() {
@@ -180,12 +192,13 @@ public class BankAccounts extends ApplicationPane {
     }
 
     private void updateTableContent() {
-//        ArrayList<BankAccount> bankAccounts = getBankAccountsFromDB();
-//        ApplicationContext.getInstance().setBankAccounts(bankAccounts);
-        ArrayList<BankAccount> bankAccounts = ApplicationContext.getInstance().getBankAccounts();
-        for(BankAccount ba: bankAccounts) {
-            ba.setSelected(new CheckBox());
+        ArrayList<BankAccount> bankAccounts = getBankAccountsFromDB();
+        ArrayList<Income> incomes = ApplicationContext.getInstance().getIncomes();
+        ArrayList<Expense> expenses = ApplicationContext.getInstance().getExpenses();
+        for(BankAccount bankAccount: bankAccounts) {
+            bankAccount.setBalanceFromIncomesAndExpenses(incomes, expenses);
         }
+        ApplicationContext.getInstance().setBankAccounts(bankAccounts);
         if(bankAccounts.size() != 0) {
             table.setItems(FXCollections.observableArrayList(bankAccounts));
         } else {

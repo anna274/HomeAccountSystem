@@ -135,7 +135,7 @@ public class Members extends ApplicationPane {
         ArrayList<AccountMember> members = getMembersFromDB();
         ApplicationContext.getInstance().setMembersList(members);
         table.setItems(FXCollections.observableArrayList(members));
-        if(members.size() != 0) {
+        if(members.size() == 0) {
             table.setPlaceholder(new Label("Добавьте пользователей в аккаунт. Для этого нажмите кнопку 'Добавить'."));
         }
         message.setText("");
