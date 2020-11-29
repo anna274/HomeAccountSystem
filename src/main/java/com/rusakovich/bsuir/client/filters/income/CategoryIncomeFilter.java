@@ -1,14 +1,12 @@
-package com.rusakovich.bsuir.client.filters;
+package com.rusakovich.bsuir.client.filters.income;
 
 import com.rusakovich.bsuir.server.entity.Income;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class CategoryFilter extends FilterStep{
+public class CategoryIncomeFilter extends IncomeFilter{
     private final Long categoryId;
-
-    public CategoryFilter(Long categoryId){
+    public CategoryIncomeFilter(Long categoryId){
         this.categoryId = categoryId;
     }
 

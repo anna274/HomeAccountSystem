@@ -5,6 +5,10 @@ import com.rusakovich.bsuir.client.app.Client;
 import com.rusakovich.bsuir.client.controllers.ApplicationPane;
 import com.rusakovich.bsuir.client.controllers.bankAccounts.BankAccounts;
 import com.rusakovich.bsuir.client.controllers.categories.Categories;
+import com.rusakovich.bsuir.client.filters.expense.BankAccountExpenseFilter;
+import com.rusakovich.bsuir.client.filters.expense.CategoryExpenseFilter;
+import com.rusakovich.bsuir.client.filters.expense.DateExpenseFilter;
+import com.rusakovich.bsuir.client.filters.expense.ExpenseFilter;
 import com.rusakovich.bsuir.server.entity.BankAccount;
 import com.rusakovich.bsuir.server.entity.Category;
 import com.rusakovich.bsuir.server.entity.Expense;
@@ -18,10 +22,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Region;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Map;
@@ -29,6 +35,14 @@ import java.util.Optional;
 
 public class Expenses extends ApplicationPane {
 
+    @FXML
+    private TableView<Expense> summaryTable;
+    @FXML
+    private TableColumn<Expense, String> summaryColumn;
+    @FXML
+    private DatePicker startDate;
+    @FXML
+    private DatePicker endDate;
     @FXML
     private Button applyFilterBtn;
     @FXML
@@ -77,6 +91,7 @@ public class Expenses extends ApplicationPane {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         selectionColumn.setCellValueFactory(new PropertyValueFactory<>("selected"));
         sumColumn.setCellValueFactory(new PropertyValueFactory<>("sum"));
+        summaryColumn.setCellValueFactory(new PropertyValueFactory<>("sum"));
         noteColumn.setCellValueFactory(
                 cell -> new SimpleStringProperty(
                         cell.getValue().getNote() != null ? cell.getValue().getNote() : ""
@@ -102,6 +117,10 @@ public class Expenses extends ApplicationPane {
 
     @FXML
     public void addExpense() {
+        if(ApplicationContext.getInstance().getBankAccounts().size() ==0) {
+            showBankAccountsModal();
+            return;
+        }
         try {
             Stage stage = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/expenses/AddExpense.fxml"));
@@ -192,6 +211,7 @@ public class Expenses extends ApplicationPane {
             table.setPlaceholder(new Label(""));
         }
         message.setText("");
+        updateSummaryTable(expenses);
     }
 
     @FXML
@@ -223,8 +243,71 @@ public class Expenses extends ApplicationPane {
     }
 
     public void applyFilter(ActionEvent actionEvent) {
+        LocalDate startDateValue = startDate.getValue();
+        LocalDate endDateValue = endDate.getValue();
+        Category category = categoriesFilterList.getValue();
+        BankAccount bankAccount = bankAccountsFilterList.getValue();
+
+        ExpenseFilter.FilterBuilder filter = new ExpenseFilter.FilterBuilder();
+
+        if(startDateValue != null && endDateValue != null) {
+            DateExpenseFilter dateFilter = new DateExpenseFilter(startDateValue, endDateValue);
+            filter.addFilter(dateFilter);
+        }
+
+        if(category != null) {
+            CategoryExpenseFilter categoryFilter = new CategoryExpenseFilter(category.getId());
+            filter.addFilter(categoryFilter);
+        }
+
+        if(bankAccount != null) {
+            BankAccountExpenseFilter bankAccountFilter = new BankAccountExpenseFilter(bankAccount.getId());
+            filter.addFilter(bankAccountFilter);
+        }
+
+        ArrayList<Expense> e = ApplicationContext.getInstance().getExpenses();
+
+        ArrayList<Expense> filteredExpenses = filter.build().filter(e);
+        table.setItems(FXCollections.observableArrayList(filteredExpenses));
+        updateSummaryTable(filteredExpenses);
     }
 
     public void removeFilter(ActionEvent actionEvent) {
+        resetStartDate(null);
+        resetEndDate(null);
+        categoriesFilterList.setValue(null);
+        bankAccountsFilterList.setValue(null);
+        updateTableContent();
+    }
+
+    public void resetStartDate(ActionEvent actionEvent) {
+        startDate.setValue(null);
+    }
+
+    public void resetEndDate(ActionEvent actionEvent) {
+        endDate.setValue(null);
+    }
+
+    private void updateSummaryTable(ArrayList<Expense> expenses) {
+        Expense summaryExpense = new Expense();
+        Float sumSum = 0.0F;
+        for(Expense expense: expenses) {
+            sumSum += expense.getSum();
+        }
+        summaryExpense.setSum(sumSum);
+        summaryTable.setItems(FXCollections.observableArrayList(new ArrayList<>()));
+        summaryTable.getItems().add(summaryExpense);
+    }
+    private void showBankAccountsModal() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        alert.setTitle("");
+        alert.setHeaderText("Нет информации о счетах семьи. Добаление расходов заблокировано");
+        alert.setContentText("Запись о расходе должна быть привязна к счёту семьи, но записей о счетах нет. Для устранения этой проблемы, перейдите во вкладку 'Счета' " +
+                "и добавьте информацию о счёте. После вы сможете добавить запись о расходе");
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.get() == ButtonType.OK){
+            parentController.switchMainPane("../views/bankAccounts/BankAccounts.fxml");
+        }
     }
 }

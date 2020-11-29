@@ -1,13 +1,13 @@
-package com.rusakovich.bsuir.client.filters;
+package com.rusakovich.bsuir.client.filters.income;
 
 import com.rusakovich.bsuir.server.entity.Income;
 
 import java.util.ArrayList;
 
-public class BankAccountFilter extends FilterStep{
+public class BankAccountIncomeFilter extends IncomeFilter{
     private final Long bankAccountId;
 
-    public BankAccountFilter(Long categoryId){
+    public BankAccountIncomeFilter(Long categoryId){
         this.bankAccountId = categoryId;
     }
 

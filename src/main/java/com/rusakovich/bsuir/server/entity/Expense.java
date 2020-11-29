@@ -3,12 +3,11 @@ package com.rusakovich.bsuir.server.entity;
 import javafx.scene.control.CheckBox;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Objects;
 
-public class Expense {
+public class Expense{
     private Long id;
     private Long categoryId;
     private Long memberId;

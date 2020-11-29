@@ -7,12 +7,23 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="525.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rusakovich.bsuir.client.controllers.expenses.Expenses">
    <children>
-      <Label alignment="CENTER" layoutX="15.0" layoutY="3.0" prefHeight="17.0" prefWidth="771.0" text="Здесь вы можете добавлять, редактировать и удалять записи о расходах семьи.">
+      <Label alignment="CENTER" layoutX="15.0" layoutY="3.0" prefHeight="17.0" prefWidth="771.0" text="Здесь вы можете добавлять, редактировать и удалять записи о доходах семьи.">
          <font>
             <Font name="Century Gothic" size="12.0" />
          </font>
       </Label>
-      <TableView fx:id="table" layoutX="8.0" layoutY="54.0" prefHeight="340.0" prefWidth="784.0">
+      <TableView fx:id="summaryTable" layoutX="8.0" layoutY="354.0" prefHeight="50.0" prefWidth="784.0">
+         <columns>
+            <TableColumn prefWidth="24.999984741210938" />
+            <TableColumn minWidth="0.0" prefWidth="0.0" />
+            <TableColumn prefWidth="119.0" text="Дата" />
+            <TableColumn prefWidth="171.0" text="Счёт" />
+            <TableColumn prefWidth="186.0" text="Категория" />
+            <TableColumn fx:id="summaryColumn" prefWidth="109.0" text="Сумма" />
+            <TableColumn prefWidth="150.0" text="Примечание" />
+         </columns>
+      </TableView>
+      <TableView fx:id="table" layoutX="8.0" layoutY="54.0" prefHeight="320.0" prefWidth="784.0">
         <columns>
             <TableColumn fx:id="selectionColumn" prefWidth="24.999984741210938" />
             <TableColumn fx:id="idColumn" minWidth="0.0" prefWidth="0.0" />
@@ -20,7 +31,7 @@
             <TableColumn fx:id="bankAccountColumn" prefWidth="171.0" text="Счёт" />
             <TableColumn fx:id="categoryColumn" prefWidth="186.0" text="Категория" />
             <TableColumn fx:id="sumColumn" prefWidth="109.0" text="Сумма" />
-            <TableColumn fx:id="noteColumn" prefWidth="173.0" text="Примечание" />
+            <TableColumn fx:id="noteColumn" prefWidth="166.5999755859375" text="Примечание" />
         </columns>
       </TableView>
       <Button layoutX="132.0" layoutY="408.0" mnemonicParsing="false" onAction="#addExpense" prefHeight="25.0" prefWidth="111.0" text="Добавить">
@@ -55,15 +66,15 @@
          </font>
       </Button>
       <Label layoutX="18.0" layoutY="471.0" prefHeight="17.0" prefWidth="57.0" text="Дата" />
-      <DatePicker layoutX="82.0" layoutY="456.0" prefHeight="17.0" prefWidth="117.0" />
-      <DatePicker layoutX="82.0" layoutY="486.0" prefHeight="17.0" prefWidth="117.0" />
+      <DatePicker fx:id="startDate" layoutX="82.0" layoutY="456.0" prefHeight="17.0" prefWidth="117.0" />
+      <DatePicker fx:id="endDate" layoutX="82.0" layoutY="486.0" prefHeight="17.0" prefWidth="117.0" />
       <Label layoutX="64.0" layoutY="460.0" prefHeight="17.0" prefWidth="11.0" text="С:" />
       <Label layoutX="60.0" layoutY="490.0" prefHeight="17.0" prefWidth="22.0" text="По:" />
       <ComboBox fx:id="bankAccountsFilterList" layoutX="323.0" layoutY="456.0" prefHeight="25.0" prefWidth="117.0" />
       <Label layoutX="265.0" layoutY="460.0" prefHeight="17.0" prefWidth="38.0" text="Счёт" />
       <ComboBox fx:id="categoriesFilterList" layoutX="323.0" layoutY="486.0" prefHeight="25.0" prefWidth="117.0" />
       <Label layoutX="265.0" layoutY="490.0" prefHeight="17.0" prefWidth="57.0" text="Категoрия" />
-      <Button layoutX="207.0" layoutY="456.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="22.0">
+      <Button layoutX="207.0" layoutY="456.0" mnemonicParsing="false" onAction="#resetStartDate" prefHeight="25.0" prefWidth="22.0">
          <graphic>
             <ImageView fitHeight="15.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -72,7 +83,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button layoutX="207.0" layoutY="486.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="22.0">
+      <Button layoutX="207.0" layoutY="486.0" mnemonicParsing="false" onAction="#resetEndDate" prefHeight="25.0" prefWidth="22.0">
          <graphic>
             <ImageView fitHeight="15.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true">
                <image>

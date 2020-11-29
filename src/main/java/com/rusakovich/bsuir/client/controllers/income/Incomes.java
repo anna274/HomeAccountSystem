@@ -5,6 +5,7 @@ import com.rusakovich.bsuir.client.app.Client;
 import com.rusakovich.bsuir.client.controllers.ApplicationPane;
 import com.rusakovich.bsuir.client.controllers.bankAccounts.BankAccounts;
 import com.rusakovich.bsuir.client.controllers.categories.Categories;
+import com.rusakovich.bsuir.client.filters.income.*;
 import com.rusakovich.bsuir.server.entity.BankAccount;
 import com.rusakovich.bsuir.server.entity.Category;
 import com.rusakovich.bsuir.server.entity.Income;
@@ -18,10 +19,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Region;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Map;
@@ -29,6 +33,14 @@ import java.util.Optional;
 
 public class Incomes extends ApplicationPane {
 
+    @FXML
+    private TableView<Income> summaryTable;
+    @FXML
+    private TableColumn<Income, String> summaryColumn;
+    @FXML
+    private DatePicker startDate;
+    @FXML
+    private DatePicker endDate;
     @FXML
     private Button applyFilterBtn;
     @FXML
@@ -77,6 +89,7 @@ public class Incomes extends ApplicationPane {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         selectionColumn.setCellValueFactory(new PropertyValueFactory<>("selected"));
         sumColumn.setCellValueFactory(new PropertyValueFactory<>("sum"));
+        summaryColumn.setCellValueFactory(new PropertyValueFactory<>("sum"));
         noteColumn.setCellValueFactory(
                 cell -> new SimpleStringProperty(
                         cell.getValue().getNote() != null ? cell.getValue().getNote() : ""
@@ -97,11 +110,49 @@ public class Incomes extends ApplicationPane {
                         store.findBankAccountById(cell.getValue().getBankAccountId()).getName()
                 )
         );
+        bankAccountsFilterList.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(BankAccount bankAccount) {
+                if(bankAccount == null) {
+                    return "";
+                }
+                return bankAccount.getName();
+            }
+
+            @Override
+            public BankAccount fromString(final String string) {
+                BankAccount bankAccount = new BankAccount();
+                bankAccount.setName(string);
+                return bankAccount;
+            }
+        });
+        categoriesFilterList.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(Category category) {
+                if(category == null) {
+                    return "";
+                }
+                return category.getName();
+            }
+
+            @Override
+            public Category fromString(final String string) {
+                Category category = new Category();
+                category.setName(string);
+                return category;
+            }
+        });
+        bankAccountsFilterList.setItems(FXCollections.observableArrayList(store.getBankAccounts()));
+        categoriesFilterList.setItems(FXCollections.observableArrayList(store.getIncomeCategories()));
         updateTableContent();
     }
 
     @FXML
     public void addIncome() {
+        if(ApplicationContext.getInstance().getBankAccounts().size() ==0) {
+            showBankAccountsModal();
+            return;
+        }
         try {
             Stage stage = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/income/AddIncome.fxml"));
@@ -192,6 +243,7 @@ public class Incomes extends ApplicationPane {
             table.setPlaceholder(new Label(""));
         }
         message.setText("");
+        updateSummaryTable(incomes);
     }
 
     @FXML
@@ -223,8 +275,72 @@ public class Incomes extends ApplicationPane {
     }
 
     public void applyFilter(ActionEvent actionEvent) {
+        LocalDate startDateValue = startDate.getValue();
+        LocalDate endDateValue = endDate.getValue();
+        Category category = categoriesFilterList.getValue();
+        BankAccount bankAccount = bankAccountsFilterList.getValue();
+
+        IncomeFilter.FilterBuilder filter = new IncomeFilter.FilterBuilder();
+
+        if(startDateValue != null && endDateValue != null) {
+            DateIncomeFilter dateFilter = new DateIncomeFilter(startDateValue, endDateValue);
+            filter.addFilter(dateFilter);
+        }
+
+        if(category != null) {
+            CategoryIncomeFilter categoryFilter = new CategoryIncomeFilter(category.getId());
+            filter.addFilter(categoryFilter);
+        }
+
+        if(bankAccount != null) {
+            BankAccountIncomeFilter bankAccountFilter = new BankAccountIncomeFilter(bankAccount.getId());
+            filter.addFilter(bankAccountFilter);
+        }
+
+        ArrayList<Income> incomes = ApplicationContext.getInstance().getIncomes();
+
+        ArrayList<Income> filteredIncomes = filter.build().filter(incomes);
+        table.setItems(FXCollections.observableArrayList(filteredIncomes));
+        updateSummaryTable(filteredIncomes);
     }
 
     public void removeFilter(ActionEvent actionEvent) {
+        resetStartDate(null);
+        resetEndDate(null);
+        categoriesFilterList.setValue(null);
+        bankAccountsFilterList.setValue(null);
+        updateTableContent();
+    }
+
+    public void resetStartDate(ActionEvent actionEvent) {
+        startDate.setValue(null);
+    }
+
+    public void resetEndDate(ActionEvent actionEvent) {
+        endDate.setValue(null);
+    }
+
+    private void updateSummaryTable(ArrayList<Income> incomes) {
+        Income summaryIncome = new Income();
+        Float sumSum = 0.0F;
+        for(Income income: incomes) {
+            sumSum += income.getSum();
+        }
+        summaryIncome.setSum(sumSum);
+        summaryTable.setItems(FXCollections.observableArrayList(new ArrayList<>()));
+        summaryTable.getItems().add(summaryIncome);
+    }
+
+    private void showBankAccountsModal() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        alert.setTitle("");
+        alert.setHeaderText("Нет информации о счетах семьи. Добаление доходов заблокировано");
+        alert.setContentText("Запись о доходе должна быть привязна к счёту семьи, но записей о счетах нет. Для устранения этой проблемы, перейдите во вкладку 'Счета' " +
+                "и добавьте информацию о счёте. После вы сможете добавить запись о доходе");
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.get() == ButtonType.OK){
+            parentController.switchMainPane("../views/bankAccounts/BankAccounts.fxml");
+        }
     }
 }
