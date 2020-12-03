@@ -31,6 +31,11 @@ public class UserMenu extends ApplicationPane {
     }
 
     @FXML
+    private void goToReports(ActionEvent actionEvent) {
+        parentController.switchMainPane("../views/reports/Reports.fxml");
+    }
+
+    @FXML
     private void goToSettings(ActionEvent event) {
         parentController.switchMainPane("../views/settings/Settings.fxml");
     }

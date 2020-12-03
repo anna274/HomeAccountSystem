@@ -12,6 +12,7 @@ import com.rusakovich.bsuir.client.filters.expense.ExpenseFilter;
 import com.rusakovich.bsuir.server.entity.BankAccount;
 import com.rusakovich.bsuir.server.entity.Category;
 import com.rusakovich.bsuir.server.entity.Expense;
+import com.rusakovich.bsuir.server.entity.Income;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -242,6 +243,14 @@ public class Expenses extends ApplicationPane {
         return expenses;
     }
 
+    public static Float getExpenseSummary(ArrayList<Expense> expenses) {
+        Float sumSum = 0.0F;
+        for(Expense expense: expenses) {
+            sumSum += expense.getSum();
+        }
+        return sumSum;
+    }
+
     public void applyFilter(ActionEvent actionEvent) {
         LocalDate startDateValue = startDate.getValue();
         LocalDate endDateValue = endDate.getValue();
@@ -290,11 +299,7 @@ public class Expenses extends ApplicationPane {
 
     private void updateSummaryTable(ArrayList<Expense> expenses) {
         Expense summaryExpense = new Expense();
-        Float sumSum = 0.0F;
-        for(Expense expense: expenses) {
-            sumSum += expense.getSum();
-        }
-        summaryExpense.setSum(sumSum);
+        summaryExpense.setSum(getExpenseSummary(expenses));
         summaryTable.setItems(FXCollections.observableArrayList(new ArrayList<>()));
         summaryTable.getItems().add(summaryExpense);
     }

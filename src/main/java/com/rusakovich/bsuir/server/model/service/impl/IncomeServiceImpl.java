@@ -5,8 +5,10 @@ import com.rusakovich.bsuir.server.model.dao.impl.IncomeDaoImpl;
 import com.rusakovich.bsuir.server.model.service.IncomeService;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 public class IncomeServiceImpl implements IncomeService {
     private final IncomeDaoImpl incomeDao;
@@ -71,5 +73,15 @@ public class IncomeServiceImpl implements IncomeService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public Map<String, Float> groupByCategory(Long memberAccountId, LocalDate begin, LocalDate end) {
+        return incomeDao.groupByCategory(memberAccountId, begin, end);
+    }
+
+    @Override
+    public Map<String, Float> groupByBankAccount(Long memberAccountId, LocalDate begin, LocalDate end) {
+        return incomeDao.groupByBankAccount(memberAccountId, begin, end);
     }
 }

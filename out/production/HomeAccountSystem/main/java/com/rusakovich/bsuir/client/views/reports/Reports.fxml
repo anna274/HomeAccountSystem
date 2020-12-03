@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="525.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rusakovich.bsuir.client.controllers.reports.Reports">
+   <children>
+       <MenuBar layoutX="14.0" layoutY="14.0" prefHeight="32.0" prefWidth="206.0">
+           <Menu mnemonicParsing="false" text="Диаграммы">
+              <items>
+                  <Menu mnemonicParsing="false" text="Доходы">
+                      <items>
+                          <MenuItem mnemonicParsing="false" onAction="#showIncomeDiagByBankAccount" text="по счетам" />
+                     <MenuItem mnemonicParsing="false" onAction="#showIncomeDiagByCategory" text="по категориям" />
+                      </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Расходы">
+                      <items>
+                          <MenuItem mnemonicParsing="false" onAction="#showExpenseDiagByBankAccount" text="по счетам" />
+                     <MenuItem mnemonicParsing="false" onAction="#showExpenseDiagByCategory" text="по категориям" />
+                      </items>
+                  </Menu>
+              </items>
+           </Menu>
+           <Menu mnemonicParsing="false" text="Экспортировать">
+            <items>
+               <MenuItem mnemonicParsing="false" onAction="#exportReport" text="Экспортировать в txt" />
+            </items></Menu>
+       </MenuBar>
+      <TableView fx:id="iTable" layoutX="14.0" layoutY="105.0" prefHeight="150.0" prefWidth="542.0">
+        <columns>
+          <TableColumn fx:id="iIdColumn" minWidth="0.0" prefWidth="0.0" />
+          <TableColumn fx:id="iBankAccountColumn" prefWidth="200.0" text="Счёт" />
+            <TableColumn fx:id="iCategoryColumn" prefWidth="200.0" text="Категория" />
+            <TableColumn fx:id="iSumColumn" prefWidth="139.19998168945312" text="Сумма" />
+        </columns>
+      </TableView>
+      <TableView fx:id="eTable" layoutX="14.0" layoutY="281.0" prefHeight="150.0" prefWidth="542.0">
+         <columns>
+            <TableColumn fx:id="eIdColumn" minWidth="0.0" prefWidth="0.0" />
+            <TableColumn fx:id="eBankAccountColumn" prefWidth="200.0" text="Счёт" />
+            <TableColumn fx:id="eCategoryColumn" prefWidth="200.0" text="Категория" />
+            <TableColumn fx:id="eSumColumn" prefWidth="139.19998168945312" text="Сумма" />
+         </columns>
+      </TableView>
+      <Label layoutX="14.0" layoutY="82.0" text="Доходы" />
+      <Label layoutX="14.0" layoutY="258.0" text="Расходы" />
+      <Label layoutX="19.0" layoutY="445.0" text="Доходы" />
+      <Label layoutX="19.0" layoutY="466.0" text="Расходы" />
+      <Label layoutX="19.0" layoutY="486.0" text="Итого:" />
+      <Separator layoutX="17.0" layoutY="444.0" prefHeight="1.0" prefWidth="143.0" />
+      <Separator layoutX="70.0" layoutY="444.0" orientation="VERTICAL" prefHeight="60.0" prefWidth="7.0" />
+      <Separator layoutX="157.0" layoutY="444.0" orientation="VERTICAL" prefHeight="60.0" prefWidth="7.0" />
+      <Separator layoutX="14.0" layoutY="444.0" orientation="VERTICAL" prefHeight="60.0" prefWidth="7.0" />
+      <Separator layoutX="17.0" layoutY="465.0" prefHeight="1.0" prefWidth="143.0" />
+      <Separator layoutX="17.0" layoutY="484.0" prefHeight="1.0" prefWidth="143.0" />
+      <Separator layoutX="17.0" layoutY="503.0" prefHeight="1.0" prefWidth="143.0" />
+      <Label layoutX="631.0" layoutY="132.0" prefHeight="17.0" prefWidth="104.0" text="Настройка отчёта" />
+      <Label layoutX="579.0" layoutY="160.0" prefHeight="17.0" prefWidth="17.0" text="С:" />
+      <Label layoutX="580.0" layoutY="193.0" prefHeight="17.0" prefWidth="23.0" text="До:" />
+      <DatePicker fx:id="startDatePicker" layoutX="601.0" layoutY="155.0" prefHeight="25.0" prefWidth="174.0" />
+      <DatePicker fx:id="endDatePicker" layoutX="602.0" layoutY="188.0" />
+      <Button fx:id="generateBtn" layoutX="581.0" layoutY="226.0" mnemonicParsing="false" onAction="#generate" prefHeight="32.0" prefWidth="195.0" text="Сгенерировать отчёт" />
+      <Label fx:id="incomeSummary" layoutX="77.0" layoutY="447.0" prefHeight="17.0" prefWidth="77.0" />
+      <Label fx:id="expenseSummary" layoutX="77.0" layoutY="466.0" prefHeight="17.0" prefWidth="77.0" />
+      <Label fx:id="summary" layoutX="77.0" layoutY="486.0" prefHeight="17.0" prefWidth="77.0" />
+      <Label fx:id="errorMessage" alignment="CENTER" layoutX="173.0" layoutY="59.0" prefHeight="17.0" prefWidth="428.0" />
+   </children>
+</Pane>

@@ -8,7 +8,9 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class IncomeDaoImpl implements IncomeDao {
     private static final String SELECT_INCOME_BY_ID = "SELECT * FROM income WHERE id = ?";
@@ -23,6 +25,18 @@ public class IncomeDaoImpl implements IncomeDao {
             "UPDATE income SET sum = ?, note = ?, category_id = ?, date = ?, " +
             "bank_account_id = ?, currency_id = ?, member_id = ?, member_account_id = ? WHERE id = ?";
     private static final String DELETE_INCOME = "DELETE FROM income WHERE id = ?";
+    private static final String GROUP_BY_CATEGORY =
+            "SELECT income_category.name, SUM(income.sum) " +
+            "FROM income " +
+            "INNER JOIN income_category ON income.category_id = income_category.id " +
+            "WHERE ((income.date BETWEEN ? AND ?) AND income.member_account_id = ?) " +
+            "GROUP BY income.category_id";
+    private static final String GROUP_BY_BANK_ACCOUNT =
+            "SELECT bank_account.name, SUM(income.sum) " +
+                    "FROM income " +
+                    "INNER JOIN bank_account ON income.bank_account_id = bank_account.id " +
+                    "WHERE ((income.date BETWEEN ? AND ?) AND income.member_account_id = ?) " +
+                    "GROUP BY income.bank_account_id";
 
     @Override
     public List<Income> findAllByMemberAccountId(Long memberAccountId) {
@@ -92,6 +106,45 @@ public class IncomeDaoImpl implements IncomeDao {
         }
         return incomes;
     }
+
+    @Override
+    public Map<String, Float> groupByCategory(Long memberAccountId, LocalDate begin, LocalDate end) {
+        Map<String, Float> res = new HashMap<>();
+        try {
+            Connection connection = ConnectionManager.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(GROUP_BY_CATEGORY);
+            preparedStatement.setObject(1, begin);
+            preparedStatement.setObject(2, end);
+            preparedStatement.setLong(3, memberAccountId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                res.put(resultSet.getString(1), resultSet.getFloat(2));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+
+    @Override
+    public Map<String, Float> groupByBankAccount(Long memberAccountId, LocalDate begin, LocalDate end) {
+        Map<String, Float> res = new HashMap<>();
+        try {
+            Connection connection = ConnectionManager.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(GROUP_BY_BANK_ACCOUNT);
+            preparedStatement.setObject(1, begin);
+            preparedStatement.setObject(2, end);
+            preparedStatement.setLong(3, memberAccountId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                res.put(resultSet.getString(1), resultSet.getFloat(2));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+
 
     @Override
     public void save(Income income) throws SQLException {

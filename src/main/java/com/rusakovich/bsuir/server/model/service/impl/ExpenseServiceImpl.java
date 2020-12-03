@@ -5,8 +5,10 @@ import com.rusakovich.bsuir.server.model.dao.impl.ExpenseDaoImpl;
 import com.rusakovich.bsuir.server.model.service.ExpenseService;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 public class ExpenseServiceImpl implements ExpenseService {
     private final ExpenseDaoImpl expenseDao;
@@ -71,5 +73,15 @@ public class ExpenseServiceImpl implements ExpenseService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public Map<String, Float> groupByCategory(Long memberAccountId, LocalDate begin, LocalDate end) {
+        return expenseDao.groupByCategory(memberAccountId, begin, end);
+    }
+
+    @Override
+    public Map<String, Float> groupByBankAccount(Long memberAccountId, LocalDate begin, LocalDate end) {
+        return expenseDao.groupByBankAccount(memberAccountId, begin, end);
     }
 }

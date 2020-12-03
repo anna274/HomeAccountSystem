@@ -274,6 +274,14 @@ public class Incomes extends ApplicationPane {
         return members;
     }
 
+    public static Float getIncomeSummary(ArrayList<Income> incomes) {
+        Float sumSum = 0.0F;
+        for(Income income: incomes) {
+            sumSum += income.getSum();
+        }
+        return sumSum;
+    }
+
     public void applyFilter(ActionEvent actionEvent) {
         LocalDate startDateValue = startDate.getValue();
         LocalDate endDateValue = endDate.getValue();
@@ -322,11 +330,7 @@ public class Incomes extends ApplicationPane {
 
     private void updateSummaryTable(ArrayList<Income> incomes) {
         Income summaryIncome = new Income();
-        Float sumSum = 0.0F;
-        for(Income income: incomes) {
-            sumSum += income.getSum();
-        }
-        summaryIncome.setSum(sumSum);
+        summaryIncome.setSum(getIncomeSummary(incomes));
         summaryTable.setItems(FXCollections.observableArrayList(new ArrayList<>()));
         summaryTable.getItems().add(summaryIncome);
     }

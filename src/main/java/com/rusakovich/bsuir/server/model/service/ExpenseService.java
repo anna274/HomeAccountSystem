@@ -2,8 +2,10 @@ package com.rusakovich.bsuir.server.model.service;
 
 import com.rusakovich.bsuir.server.entity.Expense;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 public interface ExpenseService {
     void addExpense(Expense expense);
@@ -23,4 +25,8 @@ public interface ExpenseService {
     void updateExpense(Expense expense);
 
     void deleteExpense(Long id);
+
+    Map<String, Float> groupByCategory(Long memberAccountId, LocalDate begin, LocalDate end);
+
+    Map<String, Float> groupByBankAccount(Long memberAccountId, LocalDate begin, LocalDate end);
 }

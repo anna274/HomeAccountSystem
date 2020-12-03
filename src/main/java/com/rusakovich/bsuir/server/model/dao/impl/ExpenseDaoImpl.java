@@ -11,7 +11,9 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ExpenseDaoImpl implements ExpenseDao {
     private static final String SELECT_EXPENSES_BY_MEMBER_ACCOUNT_ID = "SELECT * FROM expense WHERE member_account_id = ?";
@@ -26,6 +28,18 @@ public class ExpenseDaoImpl implements ExpenseDao {
             "UPDATE expense SET sum = ?, note = ?, category_id = ?, quantity = ?, date = ?, " +
             "bank_account_id = ?, currency_id = ?, member_id = ?, member_account_id = ? WHERE id = ?";
     private static final String DELETE_EXPENSE = "DELETE FROM expense WHERE id = ?";
+    private static final String GROUP_BY_CATEGORY =
+            "SELECT expense_category.name, SUM(expense.sum) " +
+                    "FROM expense " +
+                    "INNER JOIN expense_category ON expense.category_id = expense_category.id " +
+                    "WHERE ((expense.date BETWEEN ? AND ?) AND expense.member_account_id = ?) " +
+                    "GROUP BY expense.category_id";
+    private static final String GROUP_BY_BANK_ACCOUNT =
+            "SELECT bank_account.name, SUM(expense.sum) " +
+                    "FROM expense " +
+                    "INNER JOIN bank_account ON expense.bank_account_id = bank_account.id " +
+                    "WHERE ((expense.date BETWEEN ? AND ?) AND expense.member_account_id = ?) " +
+                    "GROUP BY expense.bank_account_id";
 
     @Override
     public List<Expense> findAllByMemberAccountId(Long memberAccountId) {
@@ -94,6 +108,44 @@ public class ExpenseDaoImpl implements ExpenseDao {
             e.printStackTrace();
         }
         return expenses;
+    }
+
+    @Override
+    public Map<String, Float> groupByCategory(Long memberAccountId, LocalDate begin, LocalDate end) {
+        Map<String, Float> res = new HashMap<>();
+        try {
+            Connection connection = ConnectionManager.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(GROUP_BY_CATEGORY);
+            preparedStatement.setObject(1, begin);
+            preparedStatement.setObject(2, end);
+            preparedStatement.setLong(3, memberAccountId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                res.put(resultSet.getString(1), resultSet.getFloat(2));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+
+    @Override
+    public Map<String, Float> groupByBankAccount(Long memberAccountId, LocalDate begin, LocalDate end) {
+        Map<String, Float> res = new HashMap<>();
+        try {
+            Connection connection = ConnectionManager.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(GROUP_BY_BANK_ACCOUNT);
+            preparedStatement.setObject(1, begin);
+            preparedStatement.setObject(2, end);
+            preparedStatement.setLong(3, memberAccountId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                res.put(resultSet.getString(1), resultSet.getFloat(2));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
     }
 
     @Override

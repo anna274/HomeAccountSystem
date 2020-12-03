@@ -6,7 +6,9 @@ import com.rusakovich.bsuir.server.entity.BankAccount;
 import com.rusakovich.bsuir.server.entity.Income;
 import com.rusakovich.bsuir.server.model.service.impl.IncomeServiceImpl;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +42,9 @@ public class IncomeController implements Controller {
             case "getAllInDateDiapason": {
                 return getAllInDateDiapason(params);
             }
+            case "groupBy": {
+                return groupBy(params);
+            }
             case "update": {
                 return update(params);
             }
@@ -49,6 +54,30 @@ public class IncomeController implements Controller {
             default:
                 return "";
         }
+    }
+
+    private String groupBy(Map<String, String> params) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MM yyyy");
+        Map<String, Float> res = null;
+        if(params.get("groupField").equals("category")) {
+            res = incomeService.groupByCategory(
+                    Long.valueOf(params.get("memberAccountId")),
+                    LocalDate.parse(params.get("begin"), formatter),
+                    LocalDate.parse(params.get("end"), formatter)
+            );
+        } else {
+            res = incomeService.groupByBankAccount(
+                    Long.valueOf(params.get("memberAccountId")),
+                    LocalDate.parse(params.get("begin"), formatter),
+                    LocalDate.parse(params.get("end"), formatter)
+            );
+        }
+        List<String> groupsStr = new ArrayList<>();
+        for (Map.Entry<String, Float> entry : res.entrySet()) {
+                groupsStr.add(params.get("groupField") + ":" + entry.getKey() + ",amount:" + entry.getValue());
+        }
+        String data = String.join(";", groupsStr);
+        return ControllerHelper.getResponse("ok", data, "");
     }
 
     private String add(Map<String, String> params) {

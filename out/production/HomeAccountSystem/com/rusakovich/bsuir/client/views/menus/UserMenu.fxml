@@ -46,7 +46,7 @@
             <Font name="Century Gothic Bold" size="12.0" />
          </font>
       </Button>
-      <Button contentDisplay="TOP" layoutX="326.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="78.0" styleClass="menu__button" text="Отчёты">
+      <Button contentDisplay="TOP" layoutX="326.0" mnemonicParsing="false" onAction="#goToReports" prefHeight="75.0" prefWidth="78.0" styleClass="menu__button" text="Отчёты">
          <graphic>
             <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                <Image url="@../../../assets/images/report.png" />
