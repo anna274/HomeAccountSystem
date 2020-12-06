@@ -27,8 +27,6 @@ public class Members extends ApplicationPane {
     @FXML
     private TableColumn<AccountMember, String> nameColumn;
     @FXML
-    private TableColumn<AccountMember, String> selectionColumn;
-    @FXML
     private TableView<AccountMember> table;
     @FXML
     private Label message;
@@ -39,12 +37,11 @@ public class Members extends ApplicationPane {
 
     @FXML
     public void initialize() {
-
+        table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         table.setPlaceholder(new Label("Загрузка ..."));
 
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        selectionColumn.setCellValueFactory(new PropertyValueFactory<>("selected"));
 
         updateTableContent();
     }
@@ -67,7 +64,7 @@ public class Members extends ApplicationPane {
     @FXML
     public void editMember() {
         try {
-            ArrayList<AccountMember> selectedMembers = getSelectedMembers();
+            ObservableList<AccountMember> selectedMembers = table.getSelectionModel().getSelectedItems();
 
             if(selectedMembers.size() == 0){
                 message.setText("Для редактирования выделите запись из таблицы");
@@ -96,7 +93,7 @@ public class Members extends ApplicationPane {
 
     @FXML
     public void deleteSelectedMembers() {
-        ArrayList<AccountMember> selectedMembers = getSelectedMembers();
+        ObservableList<AccountMember> selectedMembers = table.getSelectionModel().getSelectedItems();
         int selectedNumber = selectedMembers.size();
 
         if(selectedNumber == 0) {
@@ -120,17 +117,6 @@ public class Members extends ApplicationPane {
         }
     }
 
-    private ArrayList<AccountMember> getSelectedMembers() {
-        ArrayList<AccountMember> selectedMembers = new ArrayList<>();
-        ObservableList<AccountMember> members = table.getItems();
-        for(AccountMember member: members) {
-            if(member.getSelected().isSelected()) {
-                selectedMembers.add(member);
-            }
-        }
-        return selectedMembers;
-    }
-
     private void updateTableContent() {
         ArrayList<AccountMember> members = getMembersFromDB();
         ApplicationContext.getInstance().setMembersList(members);
@@ -143,11 +129,11 @@ public class Members extends ApplicationPane {
 
     @FXML
     private void selectAll() {
-        ObservableList<AccountMember> members = table.getItems();
-        for(AccountMember member: members) {
-            member.getSelected().setSelected(selectAllCheckbox.isSelected());
+        if(selectAllCheckbox.isSelected()) {
+            table.getSelectionModel().selectAll();
+        } else {
+            table.getSelectionModel().clearSelection();
         }
-        table.setItems(members);
     }
 
     public static ArrayList<AccountMember> getMembersFromDB(){
@@ -160,9 +146,7 @@ public class Members extends ApplicationPane {
                 ArrayList<Map<String, String>> membersParams = Client.getResponseArray(params.get("data"));
 
                 for(Map<String, String> memberParam : membersParams){
-                    AccountMember member = AccountMember.fromMap(memberParam);
-                    member.setSelected(new CheckBox());
-                    members.add(member);
+                    members.add(AccountMember.fromMap(memberParam));
                 }
             }
         }

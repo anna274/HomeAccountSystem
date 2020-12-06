@@ -1,6 +1,7 @@
 package com.rusakovich.bsuir.client.controllers.reports;
 
 import com.rusakovich.bsuir.client.app.ApplicationContext;
+import com.rusakovich.bsuir.client.app.Client;
 import com.rusakovich.bsuir.client.controllers.ApplicationPane;
 import com.rusakovich.bsuir.client.controllers.bankAccounts.BankAccounts;
 import com.rusakovich.bsuir.client.controllers.categories.Categories;
@@ -19,6 +20,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
@@ -32,6 +34,7 @@ import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Reports extends ApplicationPane {
     public TableView<Income> iTable;
@@ -52,6 +55,7 @@ public class Reports extends ApplicationPane {
     public Label expenseSummary;
     public Label summary;
     public Label errorMessage;
+    private Boolean reportGenerated = false;
 
     @FXML
     public void initialize() {
@@ -108,6 +112,7 @@ public class Reports extends ApplicationPane {
     }
 
     public void generate() {
+        reportGenerated = true;
         LocalDate startDate = startDatePicker.getValue();
         LocalDate endDate = endDatePicker.getValue();
         if(startDate == null || endDate == null) {
@@ -153,12 +158,39 @@ public class Reports extends ApplicationPane {
     }
 
     private void showDiagram(String diagramType, String groupType){
-        LocalDate startDate = startDatePicker.getValue();
-        LocalDate endDate = endDatePicker.getValue();
-        if(startDate == null || endDate == null) {
-            errorMessage.setText("Диаграмма может быть построена только по сгенерированному отчёту");
+        if(!reportGenerated) {
+            errorMessage.setText("Диаграмма может быть построена только после генерации отчёта");
             return;
         }
+
+        LocalDate startDate = startDatePicker.getValue();
+        LocalDate endDate = endDatePicker.getValue();
+
+        Long accountId = ApplicationContext.getInstance().getCurrentAccount().getId();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MM yyyy");
+        String query = diagramType +
+                "?command=groupBy" +
+                "&groupField=" + groupType +
+                "&memberAccountId=" + accountId +
+                "&begin=" + startDate.format(formatter) +
+                "&end=" + endDate.format(formatter);
+
+        Map<String, String> params = Client.doRequest(query);
+        if (!"ok".equals(params.get("status"))) {
+            errorMessage.setText(params.get("Ошибка составления отчёта"));
+            return;
+        }
+
+        ArrayList<Map<String, String>> stats = Client.getResponseArray(params.get("data"));
+        String title = "Итоговая диаграмма " + (diagramType.equals("income") ? "доходов" : "расходов") +
+                ", сформированная по полю " + (groupType.equals("category") ? "'Категория'" : "'Счёт'") +
+                "\nна период с " + startDate.format(formatter) + "по " + endDate.format(formatter);
+        ObservableList<PieChart.Data> dataSet = FXCollections.observableArrayList(new ArrayList<>());
+
+        for(Map<String, String> statItem: stats) {
+            dataSet.add(new PieChart.Data(statItem.get(groupType), Double.parseDouble(statItem.get("amount"))));
+        }
+
         Stage stage = new Stage();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../../views/reports/ShowDiagram.fxml"));
         try {
@@ -167,7 +199,7 @@ public class Reports extends ApplicationPane {
             stage.setScene(new Scene(root));
 
             ShowDiagram showDiagramController = loader.getController();
-            showDiagramController.setData(diagramType, groupType, startDate, endDate);
+            showDiagramController.setData(dataSet, title);
 
             stage.showAndWait();
         } catch (IOException e) {

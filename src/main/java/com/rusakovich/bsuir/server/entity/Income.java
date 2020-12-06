@@ -15,10 +15,9 @@ public class Income{
     private Long bankAccountId;
     private Long currencyId;
     private Float sum = 0F;
-    private String note = null;
+    private String note;
     private int quantity = 0;
     private LocalDate date;
-    private CheckBox selected;
 
     public Income() {
     }
@@ -125,14 +124,6 @@ public class Income{
         this.date = date;
     }
 
-    public CheckBox getSelected() {
-        return selected;
-    }
-
-    public void setSelected(CheckBox selected) {
-        this.selected = selected;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -160,7 +151,6 @@ public class Income{
         String str ="id:" + id +
                 ",categoryId:" + categoryId +
                 ",sum:" + sum +
-                ",note:" + note +
                 ",quantity:" + quantity +
                 ",date:" + date.format(formatter) +
                 ",memberId:" + memberId +
@@ -168,6 +158,7 @@ public class Income{
                 ",currencyId:" + currencyId +
                 ",bankAccountId:" + bankAccountId;
         if(note != null) {
+            System.out.println("not null: " + note);
             str += ",note:" + note;
         }
         return str;

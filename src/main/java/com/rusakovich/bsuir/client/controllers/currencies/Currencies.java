@@ -32,8 +32,6 @@ public class Currencies extends ApplicationPane {
     @FXML
     private TableColumn<Currency, String> codeColumn;
     @FXML
-    private TableColumn<Currency, String> selectionColumn;
-    @FXML
     private TableView<Currency> table;
     @FXML
     private Label message;
@@ -44,14 +42,13 @@ public class Currencies extends ApplicationPane {
 
     @FXML
     public void initialize() {
-
+        table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         table.setPlaceholder(new Label("Загрузка ..."));
 
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         shortNameColumn.setCellValueFactory(new PropertyValueFactory<>("shortName"));
         codeColumn.setCellValueFactory(new PropertyValueFactory<>("code"));
-        selectionColumn.setCellValueFactory(new PropertyValueFactory<>("selected"));
 
         updateTableContent();
     }
@@ -74,7 +71,7 @@ public class Currencies extends ApplicationPane {
     @FXML
     public void editCurrency() {
         try {
-            ArrayList<Currency> selectedRows = getSelectedRows();
+            ObservableList<Currency> selectedRows = table.getSelectionModel().getSelectedItems();
 
             if(selectedRows.size() == 0){
                 message.setText("Для редактирования выделите запись из таблицы");
@@ -103,7 +100,7 @@ public class Currencies extends ApplicationPane {
 
     @FXML
     public void deleteSelectedCurrencies() {
-        ArrayList<Currency> selectedRows = getSelectedRows();
+        ObservableList<Currency> selectedRows = table.getSelectionModel().getSelectedItems();
         int selectedNumber = selectedRows.size();
 
         if(selectedNumber == 0) {
@@ -127,17 +124,6 @@ public class Currencies extends ApplicationPane {
         }
     }
 
-    private ArrayList<Currency> getSelectedRows() {
-        ArrayList<Currency> selectedRows = new ArrayList<>();
-        ObservableList<Currency> currencies = table.getItems();
-        for(Currency currency: currencies) {
-            if(currency.getSelected().isSelected()) {
-                selectedRows.add(currency);
-            }
-        }
-        return selectedRows;
-    }
-
     private void updateTableContent() {
         ArrayList<Currency> currencies = getCurrenciesFromDB();
         ApplicationContext.getInstance().setCurrencies(currencies);
@@ -151,11 +137,11 @@ public class Currencies extends ApplicationPane {
 
     @FXML
     private void selectAll() {
-        ObservableList<Currency> currencies = table.getItems();
-        for(Currency currency: currencies) {
-            currency.getSelected().setSelected(selectAllCheckbox.isSelected());
+        if(selectAllCheckbox.isSelected()) {
+            table.getSelectionModel().selectAll();
+        } else {
+            table.getSelectionModel().clearSelection();
         }
-        table.setItems(currencies);
     }
 
     public static ArrayList<Currency> getCurrenciesFromDB(){
@@ -168,9 +154,7 @@ public class Currencies extends ApplicationPane {
                 ArrayList<Map<String, String>> currenciesParams = Client.getResponseArray(params.get("data"));
 
                 for(Map<String, String> currencyParams : currenciesParams){
-                    Currency currency = Currency.fromMap(currencyParams);
-                    currency.setSelected(new CheckBox());
-                    currencies.add(currency);
+                    currencies.add(Currency.fromMap(currencyParams));
                 }
             }
         }

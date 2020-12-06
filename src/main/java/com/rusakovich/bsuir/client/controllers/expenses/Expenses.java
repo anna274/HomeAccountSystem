@@ -26,6 +26,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Region;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -65,8 +66,6 @@ public class Expenses extends ApplicationPane {
     @FXML
     private TableColumn<Expense, String> noteColumn;
     @FXML
-    private TableColumn<Expense, String> selectionColumn;
-    @FXML
     private TableView<Expense> table;
     @FXML
     private Label message;
@@ -77,6 +76,7 @@ public class Expenses extends ApplicationPane {
 
     @FXML
     public void initialize() {
+        table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         ApplicationContext store = ApplicationContext.getInstance();
 
         if(store.getExpenseCategories() == null) {
@@ -90,7 +90,6 @@ public class Expenses extends ApplicationPane {
         table.setPlaceholder(new Label("Загрузка ..."));
 
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        selectionColumn.setCellValueFactory(new PropertyValueFactory<>("selected"));
         sumColumn.setCellValueFactory(new PropertyValueFactory<>("sum"));
         summaryColumn.setCellValueFactory(new PropertyValueFactory<>("sum"));
         noteColumn.setCellValueFactory(
@@ -113,6 +112,40 @@ public class Expenses extends ApplicationPane {
                         store.findBankAccountById(cell.getValue().getBankAccountId()).getName()
                 )
         );
+        bankAccountsFilterList.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(BankAccount bankAccount) {
+                if(bankAccount == null) {
+                    return "";
+                }
+                return bankAccount.getName();
+            }
+
+            @Override
+            public BankAccount fromString(final String string) {
+                BankAccount bankAccount = new BankAccount();
+                bankAccount.setName(string);
+                return bankAccount;
+            }
+        });
+        categoriesFilterList.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(Category category) {
+                if(category == null) {
+                    return "";
+                }
+                return category.getName();
+            }
+
+            @Override
+            public Category fromString(final String string) {
+                Category category = new Category();
+                category.setName(string);
+                return category;
+            }
+        });
+        bankAccountsFilterList.setItems(FXCollections.observableArrayList(store.getBankAccounts()));
+        categoriesFilterList.setItems(FXCollections.observableArrayList(store.getExpenseCategories()));
         updateTableContent();
     }
 
@@ -138,7 +171,7 @@ public class Expenses extends ApplicationPane {
     @FXML
     public void editExpense() {
         try {
-            ArrayList<Expense> selectedExpenses = getSelectedExpenses();
+            ObservableList<Expense> selectedExpenses = table.getSelectionModel().getSelectedItems();
 
             if(selectedExpenses.size() == 0){
                 message.setText("Для редактирования выделите запись из таблицы");
@@ -167,7 +200,7 @@ public class Expenses extends ApplicationPane {
 
     @FXML
     public void deleteSelectedExpenses() {
-        ArrayList<Expense> selectedExpenses = getSelectedExpenses();
+        ObservableList<Expense> selectedExpenses = table.getSelectionModel().getSelectedItems();
         int selectedNumber = selectedExpenses.size();
 
         if(selectedNumber == 0) {
@@ -191,17 +224,6 @@ public class Expenses extends ApplicationPane {
         }
     }
 
-    private ArrayList<Expense> getSelectedExpenses() {
-        ArrayList<Expense> selectedExpenses = new ArrayList<>();
-        ObservableList<Expense> expenses = table.getItems();
-        for(Expense expense: expenses) {
-            if(expense.getSelected().isSelected()) {
-                selectedExpenses.add(expense);
-            }
-        }
-        return selectedExpenses;
-    }
-
     private void updateTableContent() {
         ArrayList<Expense> expenses = getExpensesFromDB();
         ApplicationContext.getInstance().setExpenses(expenses);
@@ -217,11 +239,11 @@ public class Expenses extends ApplicationPane {
 
     @FXML
     private void selectAll() {
-        ObservableList<Expense> expenses = table.getItems();
-        for(Expense expense: expenses) {
-            expense.getSelected().setSelected(selectAllCheckbox.isSelected());
+        if(selectAllCheckbox.isSelected()) {
+            table.getSelectionModel().selectAll();
+        } else {
+            table.getSelectionModel().clearSelection();
         }
-        table.setItems(expenses);
     }
 
     public static ArrayList<Expense> getExpensesFromDB(){
@@ -234,9 +256,7 @@ public class Expenses extends ApplicationPane {
                 ArrayList<Map<String, String>> expensesParams = Client.getResponseArray(params.get("data"));
 
                 for(Map<String, String> expenseParams : expensesParams){
-                    Expense expense = Expense.fromMap(expenseParams);
-                    expense.setSelected(new CheckBox());
-                    expenses.add(expense);
+                    expenses.add(Expense.fromMap(expenseParams));
                 }
             }
         }

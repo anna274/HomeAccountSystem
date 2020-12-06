@@ -13,7 +13,6 @@
       </Label>
       <TableView fx:id="table" layoutX="8.0" layoutY="54.0" prefHeight="394.0" prefWidth="770.0">
         <columns>
-            <TableColumn fx:id="selectionColumn" prefWidth="24.999984741210938" />
             <TableColumn fx:id="idColumn" minWidth="0.0" prefWidth="0.0" />
             <TableColumn fx:id="nameColumn" prefWidth="397.6000061035156" text="Название" />
             <TableColumn fx:id="codeColumn" prefWidth="84.0" text="Код" />

@@ -1,7 +1,5 @@
 package com.rusakovich.bsuir.server.entity;
 
-import javafx.scene.control.CheckBox;
-
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
@@ -15,7 +13,6 @@ public class BankAccount {
     private Float expenses = 0F;
     private Float income = 0F;
     private Float balance = 0F;
-    private CheckBox selected;
 
     public BankAccount() {
     }
@@ -93,14 +90,6 @@ public class BankAccount {
 
     public void setBalance(Float balance) {
         this.balance = balance;
-    }
-
-    public CheckBox getSelected() {
-        return selected;
-    }
-
-    public void setSelected(CheckBox selected) {
-        this.selected = selected;
     }
 
     @Override

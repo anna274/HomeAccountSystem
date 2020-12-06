@@ -62,8 +62,6 @@ public class Incomes extends ApplicationPane {
     @FXML
     private TableColumn<Income, String> noteColumn;
     @FXML
-    private TableColumn<Income, String> selectionColumn;
-    @FXML
     private TableView<Income> table;
     @FXML
     private Label message;
@@ -74,6 +72,7 @@ public class Incomes extends ApplicationPane {
 
     @FXML
     public void initialize() {
+        table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         ApplicationContext store = ApplicationContext.getInstance();
 
         if(store.getIncomeCategories() == null) {
@@ -87,7 +86,6 @@ public class Incomes extends ApplicationPane {
         table.setPlaceholder(new Label("Загрузка ..."));
 
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        selectionColumn.setCellValueFactory(new PropertyValueFactory<>("selected"));
         sumColumn.setCellValueFactory(new PropertyValueFactory<>("sum"));
         summaryColumn.setCellValueFactory(new PropertyValueFactory<>("sum"));
         noteColumn.setCellValueFactory(
@@ -169,8 +167,7 @@ public class Incomes extends ApplicationPane {
     @FXML
     public void editIncome() {
         try {
-            ArrayList<Income> selectedIncomes = getSelectedIncomes();
-
+            ObservableList<Income> selectedIncomes = table.getSelectionModel().getSelectedItems();
             if(selectedIncomes.size() == 0){
                 message.setText("Для редактирования выделите запись из таблицы");
                 return;
@@ -198,7 +195,7 @@ public class Incomes extends ApplicationPane {
 
     @FXML
     public void deleteSelectedIncomes() {
-        ArrayList<Income> selectedIncomes = getSelectedIncomes();
+        ObservableList<Income> selectedIncomes = table.getSelectionModel().getSelectedItems();
         int selectedNumber = selectedIncomes.size();
 
         if(selectedNumber == 0) {
@@ -222,17 +219,6 @@ public class Incomes extends ApplicationPane {
         }
     }
 
-    private ArrayList<Income> getSelectedIncomes() {
-        ArrayList<Income> selectedIncomes = new ArrayList<>();
-        ObservableList<Income> incomes = table.getItems();
-        for(Income income: incomes) {
-            if(income.getSelected().isSelected()) {
-                selectedIncomes.add(income);
-            }
-        }
-        return selectedIncomes;
-    }
-
     private void updateTableContent() {
         ArrayList<Income> incomes = getIncomesFromDB();
         ApplicationContext.getInstance().setIncomes(incomes);
@@ -248,11 +234,11 @@ public class Incomes extends ApplicationPane {
 
     @FXML
     private void selectAll() {
-        ObservableList<Income> incomes = table.getItems();
-        for(Income income: incomes) {
-            income.getSelected().setSelected(selectAllCheckbox.isSelected());
+        if(selectAllCheckbox.isSelected()) {
+            table.getSelectionModel().selectAll();
+        } else {
+            table.getSelectionModel().clearSelection();
         }
-        table.setItems(incomes);
     }
 
     public static ArrayList<Income> getIncomesFromDB(){
@@ -263,11 +249,8 @@ public class Incomes extends ApplicationPane {
         if(params.get("status").equals("ok")) {
             if(params.containsKey("data")) {
                 ArrayList<Map<String, String>> incomesParams = Client.getResponseArray(params.get("data"));
-
                 for(Map<String, String> incomeParams : incomesParams){
-                    Income income = Income.fromMap(incomeParams);
-                    income.setSelected(new CheckBox());
-                    members.add(income);
+                    members.add(Income.fromMap(incomeParams));
                 }
             }
         }

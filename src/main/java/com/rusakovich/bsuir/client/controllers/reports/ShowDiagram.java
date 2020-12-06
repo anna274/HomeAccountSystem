@@ -22,39 +22,19 @@ public class ShowDiagram {
     public Label caption = new Label("");
     private Double summary = 0.0;
 
-    public void setData(String dataType, String groupField, LocalDate begin, LocalDate end) {
-        Long accountId = ApplicationContext.getInstance().getCurrentAccount().getId();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MM yyyy");
-        String query = dataType +
-                "?command=groupBy" +
-                "&groupField=" + groupField +
-                "&memberAccountId=" + accountId +
-                "&begin=" + begin.format(formatter) +
-                "&end=" + end.format(formatter);
-        Map<String, String> params = Client.doRequest(query);
-        if ("ok".equals(params.get("status"))) {
-            ArrayList<Map<String, String>> stats = Client.getResponseArray(params.get("data"));
-            ObservableList<PieChart.Data> dataSet = FXCollections.observableArrayList(new ArrayList<>());
-            for(Map<String, String> statItem: stats) {
-                dataSet.add(new PieChart.Data(statItem.get(groupField), Double.parseDouble(statItem.get("amount"))));
-            }
-            pieChart.setData(dataSet);
-            calculateSummary();
+    public void setData(ObservableList<PieChart.Data> dataSet, String titleStr) {
+        pieChart.setData(dataSet);
+        calculateSummary();
 
-            pieChart.getData().forEach(data -> data.getNode().addEventHandler(MouseEvent.MOUSE_CLICKED,
-                    e -> {
-                        caption.setText("Процентное соотношение: " + Math.round((data.getPieValue() / summary) * 10000)/100 + "%");
-                    }));
-
-            title.setText("Итоговая диаграмма " + (dataType.equals("income") ? "доходов" : "расходов") +
-                    ", сформированная по полю " + (groupField.equals("category") ? "'Категория'" : "'Счёт'") +
-                    "\nна период с " + begin.format(formatter) + "по " + end.format(formatter));
-        } else {
-            title.setText(params.get("error"));
-        }
+        pieChart.getData().forEach(data -> data.getNode().addEventHandler(MouseEvent.MOUSE_CLICKED,
+                e -> {
+                    caption.setText("Процентное соотношение: " + Math.round((data.getPieValue() / summary) * 10000)/100 + "%");
+                }));
+        title.setText(titleStr);
     }
 
     private void calculateSummary(){
+        summary = 0.0;
         pieChart.getData().forEach(data -> summary += data.getPieValue());
     }
 }

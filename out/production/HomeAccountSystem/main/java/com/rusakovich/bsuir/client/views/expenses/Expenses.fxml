@@ -14,24 +14,22 @@
       </Label>
       <TableView fx:id="summaryTable" layoutX="8.0" layoutY="354.0" prefHeight="50.0" prefWidth="784.0">
          <columns>
-            <TableColumn prefWidth="24.999984741210938" />
             <TableColumn minWidth="0.0" prefWidth="0.0" />
             <TableColumn prefWidth="119.0" text="Дата" />
             <TableColumn prefWidth="171.0" text="Счёт" />
             <TableColumn prefWidth="186.0" text="Категория" />
             <TableColumn fx:id="summaryColumn" prefWidth="109.0" text="Сумма" />
-            <TableColumn prefWidth="150.0" text="Примечание" />
+            <TableColumn prefWidth="192.4000244140625" text="Примечание" />
          </columns>
       </TableView>
       <TableView fx:id="table" layoutX="8.0" layoutY="54.0" prefHeight="320.0" prefWidth="784.0">
         <columns>
-            <TableColumn fx:id="selectionColumn" prefWidth="24.999984741210938" />
             <TableColumn fx:id="idColumn" minWidth="0.0" prefWidth="0.0" />
           <TableColumn fx:id="dateColumn" prefWidth="119.0" text="Дата" />
             <TableColumn fx:id="bankAccountColumn" prefWidth="171.0" text="Счёт" />
             <TableColumn fx:id="categoryColumn" prefWidth="186.0" text="Категория" />
             <TableColumn fx:id="sumColumn" prefWidth="109.0" text="Сумма" />
-            <TableColumn fx:id="noteColumn" prefWidth="166.5999755859375" text="Примечание" />
+            <TableColumn fx:id="noteColumn" prefWidth="193.20001220703125" text="Примечание" />
         </columns>
       </TableView>
       <Button layoutX="132.0" layoutY="408.0" mnemonicParsing="false" onAction="#addExpense" prefHeight="25.0" prefWidth="111.0" text="Добавить">

@@ -30,8 +30,6 @@ public class Accounts extends ApplicationPane {
     @FXML
     private TableColumn<Account, String> roleColumn;
     @FXML
-    private TableColumn<Account, String> selectionColumn;
-    @FXML
     private TableView<Account> table;
     @FXML
     private Label message;
@@ -42,12 +40,11 @@ public class Accounts extends ApplicationPane {
 
     @FXML
     public void initialize() {
-
+        table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         table.setPlaceholder(new Label("Загрузка ..."));
 
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         loginColumn.setCellValueFactory(new PropertyValueFactory<>("login"));
-        selectionColumn.setCellValueFactory(new PropertyValueFactory<>("selected"));
         roleColumn.setCellValueFactory(cell -> new SimpleStringProperty(getRoleString(cell.getValue().getRoleId())));
         updateTableContent();
     }
@@ -74,7 +71,7 @@ public class Accounts extends ApplicationPane {
     @FXML
     public void editAccount() {
         try {
-            ArrayList<Account> selectedAccounts = getSelectedAccounts();
+            ObservableList<Account> selectedAccounts = table.getSelectionModel().getSelectedItems();
 
             if(selectedAccounts.size() == 0){
                 message.setText("Для редактирования выделите запись из таблицы");
@@ -103,7 +100,7 @@ public class Accounts extends ApplicationPane {
 
     @FXML
     public void deleteSelectedAccounts() {
-        ArrayList<Account> selectedAccounts = getSelectedAccounts();
+        ObservableList<Account> selectedAccounts = table.getSelectionModel().getSelectedItems();
         int selectedNumber = selectedAccounts.size();
 
         if(selectedNumber == 0) {
@@ -127,17 +124,6 @@ public class Accounts extends ApplicationPane {
         }
     }
 
-    private ArrayList<Account> getSelectedAccounts() {
-        ArrayList<Account> selectedAccounts = new ArrayList<>();
-        ObservableList<Account> accounts = table.getItems();
-        for(Account account: accounts) {
-            if(account.getSelected().isSelected()) {
-                selectedAccounts.add(account);
-            }
-        }
-        return selectedAccounts;
-    }
-
     private void updateTableContent() {
         Long accountId = ApplicationContext.getInstance().getCurrentAccount().getId();
         String query = "account?command=getAll";
@@ -150,7 +136,6 @@ public class Accounts extends ApplicationPane {
 
                 for(Map<String, String> accountParams : accountsParams){
                     Account account = Account.fromMap(accountParams);
-                    account.setSelected(new CheckBox());
                     if(!account.getId().equals(accountId)) {
                         accounts.add(account);
                     }
@@ -166,10 +151,10 @@ public class Accounts extends ApplicationPane {
 
     @FXML
     private void selectAll() {
-        ObservableList<Account> accounts = table.getItems();
-        for(Account account: accounts) {
-            account.getSelected().setSelected(selectAllCheckbox.isSelected());
+        if(selectAllCheckbox.isSelected()) {
+            table.getSelectionModel().selectAll();
+        } else {
+            table.getSelectionModel().clearSelection();
         }
-        table.setItems(accounts);
     }
 }

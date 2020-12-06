@@ -33,8 +33,6 @@ public class BankAccounts extends ApplicationPane {
     @FXML
     private TableColumn<Long, String> idColumn;
     @FXML
-    private TableColumn<BankAccount, String> selectionColumn;
-    @FXML
     private TableColumn<BankAccount, String> nameColumn;
     @FXML
     private TableColumn<BankAccount, String> ownerColumn;
@@ -53,6 +51,7 @@ public class BankAccounts extends ApplicationPane {
 
     @FXML
     public void initialize() {
+        table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         ApplicationContext store = ApplicationContext.getInstance();
 
         if(store.getCurrencies() == null) {
@@ -76,7 +75,6 @@ public class BankAccounts extends ApplicationPane {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         balanceColumn.setCellValueFactory(new PropertyValueFactory<>("balance"));
-        selectionColumn.setCellValueFactory(new PropertyValueFactory<>("selected"));
 
         currencyColumn.setCellValueFactory(
                 cell -> new SimpleStringProperty(
@@ -127,7 +125,7 @@ public class BankAccounts extends ApplicationPane {
     @FXML
     public void editBankAccount() {
         try {
-            ArrayList<BankAccount> selectedBankAccounts = getSelectedBankAccounts();
+            ObservableList<BankAccount> selectedBankAccounts = table.getSelectionModel().getSelectedItems();
 
             if(selectedBankAccounts.size() == 0){
                 message.setText("Для редактирования выделите запись из таблицы");
@@ -156,7 +154,7 @@ public class BankAccounts extends ApplicationPane {
 
     @FXML
     public void deleteSelectedBankAccounts() {
-        ArrayList<BankAccount> selectedMembers = getSelectedBankAccounts();
+        ObservableList<BankAccount> selectedMembers = table.getSelectionModel().getSelectedItems();
         int selectedNumber = selectedMembers.size();
 
         if(selectedNumber == 0) {
@@ -178,17 +176,6 @@ public class BankAccounts extends ApplicationPane {
             updateTableContent();
             deleteBtn.setText("Удалить");
         }
-    }
-
-    private ArrayList<BankAccount> getSelectedBankAccounts() {
-        ArrayList<BankAccount> selectedBankAccounts = new ArrayList<>();
-        ObservableList<BankAccount> bankAccounts = table.getItems();
-        for(BankAccount bankAccount: bankAccounts) {
-            if(bankAccount.getSelected().isSelected()) {
-                selectedBankAccounts.add(bankAccount);
-            }
-        }
-        return selectedBankAccounts;
     }
 
     private void updateTableContent() {
@@ -218,9 +205,7 @@ public class BankAccounts extends ApplicationPane {
                 ArrayList<Map<String, String>> bankAccountsParams = Client.getResponseArray(params.get("data"));
 
                 for(Map<String, String> bankAccountParams : bankAccountsParams){
-                    BankAccount bankAccount = BankAccount.fromMap(bankAccountParams);
-                    bankAccount.setSelected(new CheckBox());
-                    bankAccounts.add(bankAccount);
+                    bankAccounts.add(BankAccount.fromMap(bankAccountParams));
                 }
             }
         }
@@ -229,10 +214,10 @@ public class BankAccounts extends ApplicationPane {
 
     @FXML
     private void selectAll() {
-        ObservableList<BankAccount> bankAccounts = table.getItems();
-        for(BankAccount bankAccount: bankAccounts) {
-            bankAccount.getSelected().setSelected(selectAllCheckbox.isSelected());
+        if(selectAllCheckbox.isSelected()) {
+            table.getSelectionModel().selectAll();
+        } else {
+            table.getSelectionModel().clearSelection();
         }
-        table.setItems(bankAccounts);
     }
 }

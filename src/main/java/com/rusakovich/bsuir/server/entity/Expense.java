@@ -1,7 +1,5 @@
 package com.rusakovich.bsuir.server.entity;
 
-import javafx.scene.control.CheckBox;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
@@ -18,7 +16,6 @@ public class Expense{
     private String note;
     private int quantity;
     private LocalDate date;
-    private CheckBox selected;
 
     public Expense() {
     }
@@ -131,14 +128,6 @@ public class Expense{
 
     public void setCurrencyId(Long currencyId) {
         this.currencyId = currencyId;
-    }
-
-    public CheckBox getSelected() {
-        return selected;
-    }
-
-    public void setSelected(CheckBox selected) {
-        this.selected = selected;
     }
 
     @Override

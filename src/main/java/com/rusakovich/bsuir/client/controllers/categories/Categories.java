@@ -33,8 +33,6 @@ public class Categories extends ApplicationPane {
     @FXML
     private TableColumn<Category, String> nameColumn;
     @FXML
-    private TableColumn<Category, String> selectionColumn;
-    @FXML
     private TableView<Category> table;
     @FXML
     private Label message;
@@ -45,12 +43,11 @@ public class Categories extends ApplicationPane {
 
     @FXML
     public void initialize() {
-
+        table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         table.setPlaceholder(new Label("Загрузка ..."));
 
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        selectionColumn.setCellValueFactory(new PropertyValueFactory<>("selected"));
 
         updateTableContent();
     }
@@ -91,7 +88,7 @@ public class Categories extends ApplicationPane {
     @FXML
     public void editCategory() {
         try {
-            ArrayList<Category> selectedRows = getSelectedRows();
+            ObservableList<Category> selectedRows = table.getSelectionModel().getSelectedItems();
 
             if(selectedRows.size() == 0){
                 message.setText("Для редактирования выделите запись из таблицы");
@@ -119,7 +116,7 @@ public class Categories extends ApplicationPane {
 
     @FXML
     public void deleteSelectedCategories() {
-        ArrayList<Category> selectedRows = getSelectedRows();
+        ObservableList<Category> selectedRows = table.getSelectionModel().getSelectedItems();
         int selectedNumber = selectedRows.size();
 
         if(selectedNumber == 0) {
@@ -143,16 +140,6 @@ public class Categories extends ApplicationPane {
         }
     }
 
-    private ArrayList<Category> getSelectedRows() {
-        ArrayList<Category> selectedRows = new ArrayList<>();
-        ObservableList<Category> categories = table.getItems();
-        for(Category category: categories) {
-            if(category.getSelected().isSelected()) {
-                selectedRows.add(category);
-            }
-        }
-        return selectedRows;
-    }
 
     private void updateTableContent() {
         message.setText("Загрузка...");
@@ -172,11 +159,11 @@ public class Categories extends ApplicationPane {
 
     @FXML
     private void selectAll() {
-        ObservableList<Category> categories = table.getItems();
-        for(Category category: categories) {
-            category.getSelected().setSelected(selectAllCheckbox.isSelected());
+        if(selectAllCheckbox.isSelected()) {
+            table.getSelectionModel().selectAll();
+        } else {
+            table.getSelectionModel().clearSelection();
         }
-        table.setItems(categories);
     }
 
     public void setServerControllerName(String serverControllerName) {
@@ -193,9 +180,7 @@ public class Categories extends ApplicationPane {
                 ArrayList<Map<String, String>> categoriesParams = Client.getResponseArray(params.get("data"));
 
                 for(Map<String, String> categoryParams : categoriesParams){
-                    Category category = Category.fromMap(categoryParams);
-                    category.setSelected(new CheckBox());
-                    categories.add(category);
+                    categories.add(Category.fromMap(categoryParams));
                 }
             }
         }
